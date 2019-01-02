@@ -1,0 +1,2 @@
+# R_for_entomologists
+This project is an attempt to create some curriculum for entomologists (although really anyone, but I work with entomologists) to teach them basic data manipulation and cleaning skills in R. My goal is to do this in a useful way with real examples and being very intentional about acknowledging and hopefully reducing any anxiety field biologists may have about learning to use a statistical programming language.
