@@ -1,0 +1,50 @@
+---
+title: "Notes on this idea"
+output: html_notebook
+---
+The following are the brainstorming notes I scribbled while in a Christmas Eve mass, not paying attention. Recording these here in case I lose the envelope I scribbled them on.
+
+What is R?
+
+- R as language
+- R as data manipulation/cleaning tool
+- R for programming
+- R for stats
+- R for apps
+- R for data viz
+
+The first two points above are foundational to understand for reproducible research and statistics, in my opinion.
+
+R as language 
+
+- Like a language, need to be able to read it to understand it
+- There are rules to write in any language and there are "rules" one can follow when writing R code to make it easier to read (usually referred to as "style guides")
+- Want to focus on learning language and rules through simple data manipulations
+- Check out R style sheets, find one you like and tweak it to suit your needs
+
+Tidyverse vs base R - talk about this a bit?
+
+R for data manipulation
+
+- Intro to tidyverse, "grammar" of R
+- Verbs to teach
+   - filter
+   - select
+   - summarize
+   - count
+   - mutate
+   - case_when (a bit more advanced, but very useful)
+   - pipe (not really a verb, but whatever)
+
+For loops
+
+- Use Marie's data as an example
+- Use buffer zone data as an example
+- Unlocks the power of functions
+- Address that they're not necessarily the most efficient, but for our purposes we mostly don't care. If speed/length of running code becomes a concern they can learn about *apply or map
+- Mention custom functions?? Can be introduced at a low level, possibly
+
+Assorted notes
+
+- Use a gif of Willy Wonka saying "nothing!" when referencing how much R I knew when I started
+- Learning to use R is not easy and neither is what I'm trying to do with them, but it is "simple" or "basic" in that it is foundational. Never mean easy if I accidently say easy.

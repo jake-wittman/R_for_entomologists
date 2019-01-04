@@ -1,0 +1,444 @@
+---
+title: "Data Cleaning and Manipulation"
+output:
+  html_document:
+    df_print: paged
+---
+This is an R markdown document. R markdown documents are a wonderful tool for weaving text together with code and figures. These documents can be output in a number of formats, like PDF, HTML, word documents, and even slide show presentations. You can type regularly in this document like I am here. There are basic formatting options available like:
+
+## Headers!
+
+- lists
+- **bold**
+- *italics*
+- Equations: $4 = x + 2$
+- many others!
+
+We won't be going in depth into R markdown in this activity, I just wanted to introduce it because we'll be using markdown to work through these activities. To learn more about R markdown, google "R markdown cheat sheet" or go to this [link](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf). 
+
+*Side note*: Because the document we're working in right now is an html_notebook (see the "output" section at the top of the R markdown document), you can preview what this document will look like as an HTML file by hitting "Preview" up above or pressing **ctrl + shift + k**.
+
+## Background required
+
+This document assumes you are comfortable with installing and loading packages, reading data into R as a data.frame, assigning values to objects, and using basic functions like `mean()` and `sum()`. 
+
+Before we can start, we'll need to make sure you have the `tidyverse` package installed. Run the code below to install the package and load it (don't worry about understanding the code if you don't, that's not the point of this tutorial).
+```{r install_packages, echo = TRUE, message = FALSE}
+if (!require(tidyverse)) install.packages("tidyverse")
+library(tidyverse)
+```
+
+## Let's get started!
+
+R is great for statistical analysis if your data are in the right format, but what do you do if you don't have your data formatted properly to perform say, an ANOVA or a linear regression? You could make an Excel spreadsheet with multiple worksheets, each with a different format of your data. But this may take anyway from hours to days depending on the complexity of your data and the forms you need your data. Thankfully, with R and the tidyverse package you can speed up your data manipulation and cleaning significantly. This document and activity will walk you through some of the most useful tidyverse functions, show you how I've used them (or would have, if I'd known about them at the time) in the past, and demonstrate how to make your code more legible. There will also be some opportunities at the end of the document for you to practice what I'm demonstrating. While you're reading through this document, pay attention to how I've written the code. I use a slightly modified version of the Google style guide, so you can use my code as an example of one possible style.
+
+## The pipe
+
+The pipe will be the first tool in your new R toolbox to help you write human readable code. The pipe operator looks like this `%>%`, and it may look a little weird and confusing especially to someone new to programming. Before I explain exactly what the pipe means and how it works, I want to draw an analogy between the pipe operator and the assignment operator (`<-`) while also giving a brief lesson on writing readable code.
+
+You should be familiar with the assignment operator. It's used to tell R that you want to store something (a number, a vector, a string, a data frame, etc.) with a particular name. You might do something like this:
+
+`x <- 4`
+
+You can read this R code as "store 4 in x" or "assign the number 4 to the letter x". This is a basic application of the assignment operator. Let's look at a slightly more complicated application.
+
+```{r, echo = TRUE, eval = TRUE}
+# The set.seed function is used to make sure our "random" results are consistent.
+# Don't worry if you don't understand what this function means
+set.seed(1)
+# Randomly sample 10 numbers from the numbers 1 through 10 with replacement
+# and store those 10 numbers in the object "x"
+x <- sample(1:10, 10, replace = TRUE)
+# Let's see what we put in x
+x
+
+# Calculate the mean of all the values in x and assign the mean value of x to 
+# the object "y"
+y <- mean(x)
+# Let's check y to see what the mean of x is
+y
+```
+
+In simple (probably overly simple, but that's okay) language, we randomly picked 10 numbers (using the `sample()` function) and used the assignment operator to "give" these 10 numbers to x. Then we calculated the mean of these 10 numbers and "gave" those numbers to y. Now, if we wanted we could type x or y into the console in R and return the respective value(s) we "gave" to them. 
+
+*Side note*: You can also use `=` as an assignment operator but you shouldn't. Most R style guides recommend reserving `<-` as your assignment operator and using `=` only within a function to specify arguments for the function.
+
+If you've worked in R a little before or have some programming background, you may know that you can also nest functions inside one another. Instead of assigning 10 random numbers to x and then taking the mean of x, we could have just nested the `sample()` function inside the mean function like so:
+
+`y <- mean(sample(1:10, 10, replace = TRUE)`
+
+Much like when performing the order of operations in a math equation containing multiple sets of parentheses, R will start with whatever function is nested the furthest inside and then work out. So the code above, in plain English, reads as "First, sample 10 numbers from the numbers 1 through 10 with replacement, then take the mean of those 10 numbers and store that mean value as y". This English "translation" is an accurate representation of what R is doing when it reads that code. That is to say, R executes the code in the same order I described it in in English. Now, take a moment and consider the plain English reading of the above code and compare that to how the code is actually written. How do you read the English sentence? How do you read the code?
+
+The code does not read like an English sentence. When we read in English, we read from left to right. In the R code version, we basically end up reading the code from right to left to figure out what order R is working in. A translation that is more faithful to the way the code is actually written  might be: "In the object y, we will store the mean of a sample of 10 random numbers between 1 and 10". This translation doesn't reflect the order in which R actually reads through the code though (our first translation more accurately reflects the order R works through your code). This results in a mismatch between our expectations as English readers when we are trying to learn to read R code and understand what is happening. Thankfully, the tidyverse has provided us with an operator (the pipe!) to make how we write code match up with our intuitions.
+
+TL;DR: English reads from left to right. When you nest functions in R, you end up needing to read the code more or less from right to left. This does not match our intuitions and can make learning read, write, and understand more difficult. Enter the pipe!
+
+The pipe operator allows us to reorganize our code so that it reads more like English. Instead of nesting functions, we can "pipe" the results of one function to another function. Here's the piped version of the above code.
+
+```{r, echo = TRUE, eval = TRUE}
+set.seed(1)
+# First sample 10 numbers with replacement between 1 and 10, then take those
+# numbers and give them to the mean function to find the mean.
+sample(1:10, 10, replace = TRUE) %>% mean()
+```
+
+Now, our code lines up with both our expectations for how it should be read (left to right) and how R will execute the code (and if you compare the answer we got for the mean in both examples, you'll see they're the same)! First, R will sample 10 numbers from between 1 and 10, then it will "pipe" those ten numbers to the mean function, which will calculate the mean of those 10 numbers. Let's look at a few more examples of the pipe in action and then there will be a few problems you can work through to practice using the pipe.
+
+*Side note*: You may be confused about the difference between the assignment operator `<-` and the pipe `%>%` because of some of the plain English used above. The assignment operator is used to tell R to associate an object name (the variables `x` or `y` above) with something else (in our case, a sample of 10 numbers and a mean, respectively). By using the assignment operator you create a permanent association between the object `x` and the sample of 10 numbers (at least until you remove x from your environment, or reassign x to some other object). The pipe operator does not create any such association. All the pipe operator does is take an object, or the output from a function, and "sends" it to another function to use. You cannot pipe one object to another object, you'll get an error. If you want to save the output from a function in a pipe chain, you have to use the assignment operator (I'll cover this later).
+
+## Pipe examples
+
+You've been measuring the hind tibia length of 20 *Cerceris* wasps and you want to know the mean, median, and standard deviation. In the below, we'll generate some random values for hind tibia length and then use the pipe to get the outputs we want. (The `rnorm` function is used to generate random values from a normal distribution.)
+
+```{r pipe_examples, echo = TRUE, eval = TRUE}
+# Get 20 random samples from a normal distribution with mean 12 and standard
+# deviation 3.
+hind_tibia_length <- rnorm(n = 20, mean = 12, sd = 3)
+
+# Let's pipe our data to our data summary functions
+
+# Mean
+hind_tibia_length %>% mean()
+
+# Median
+hind_tibia_length %>% median()
+
+# Standard deviation
+hind_tibia_length %>% sd()
+```
+
+In our three examples, we've piped our data to three different functions to get different summaries. Later, I'll show you how to more efficiently produce these summary results. Now, what do we do if we want to assign our summary output to an object, like when we assigned `y <- mean(x)`? The code to do that would look like this:
+
+```{r pipe_examples_2, echo = TRUE}
+# Save mean output
+mean_tibia_length <- hind_tibia_length %>% mean()
+# Check that it matches our output from earlier
+mean_tibia_length
+
+# Save median output
+median_tibia_length <- hind_tibia_length %>% median()
+# Check that it matches our output from earlier
+median_tibia_length
+
+# Save sd output
+sd_tibia_length <- hind_tibia_length %>% sd()
+# Check that it matches our output from earlier
+sd_tibia_length
+```
+
+This might be confusing at first. Didn't I just say that we want to try to write code that reads like English and also reflects the order in which R will execute the code? Isn't storing our output in the object the last thing R would do? Why are we putting that first in our code? We sacrifice a little bit of intuitive readability here to speed up our work flow as we write more lines of code. In my experience, I've found that I spend more time referencing the objects I've saved some output as ("what did I call that again?", "where did I calculate that?", etc.) than re-reading exactly what I did. Think of the assignment operator as a placeholder dividing your code into two separate sides, left of the assignment operator and right of the assignemnt operator. By putting the object I've saved something as on the left side, it makes it easier for me to find it again in the code or quickly scan what I've written to see my output. The readability of what you did on the right hand side of the assignment operator becomes important when you're returning to code you wrote a long time ago or are sharing code with someone who is looking at it for the first time. This arrangement strikes a balance between your needs while writing code, and your's or someone else's needs when looking at the code later.
+
+*Side note*: The pipe operator `%>%` can be kind of frustrating to type. Thankfully there's a keyboard shortcut for it in R Studio! If you're using a Windows machine use **ctrl + shit + m** to insert the pipe operator. While we're at it, there's a shortcut for the assignment operator `<-` too! Again, on a Windows machine type **alt + -**. (Sorry, I don't know the Mac OS shortcuts. A google search might help?)
+
+## Chaining multiple functions together with the pipe
+
+You can use the pipe operator to link multiple functions together, which is often useful when summarizing data. Here's a brief example. I'll briefly explain what these functions do if you haven't seen them before, but we'll cover them in more depth in a bit. In this example, I'll show you three methods of achieving the same result to highlight again why pipes are useful or preferred over other methods. In the first method, we'll save every intermediate step as an object on our way to our final goal without using any pipes. The second method will nest multiple functions to avoid saving unneeded intermediate objects while still not using pipes. The final method will use pipes.
+
+In this example, we're using the `iris` dataset that is built into R. If you type `iris` into your console, it'll print out the dataset. This data has observations on sepal length and width and petal length and width for three different species of irises. This example is a little contrived, but it illustrates my point. Imagine you want to take the iris data set and are interested in only the data on *Iris setosa*. Furthermore, you don't care about anything but the sepal length of *Iris setosa*. And for some reason, you want the data ordered from shortest sepal length to longest sepal length for *Iris setosa*. Here are three ways you could accomplish this using dplyr verbs that let you **filter** your data based on certain criteria, **select** particular columns from your data, and **arrange** the data according to a certain variable: 
+
+### Nesting multiple functions
+
+```{r nesting}
+nested_sepal_length <- arrange(select(filter(iris, Species == "setosa"), Sepal.Length), Sepal.Length)
+```
+
+### Saving every intermediate step without any pipes
+
+```{r intermediate}
+setosa_iris <- filter(iris, Species == "setosa")
+sepal_length <- select(setosa_iris, Sepal.Length)
+intermediate_sepal_length <- arrange(sepal_length, Sepal.Length)
+```
+
+### Using multiple pipes
+
+```{r pipes}
+piped_sepal_length <- iris %>% 
+   filter(Species == "setosa") %>% 
+   select(Sepal.Length) %>% 
+   arrange(Sepal.Length)
+
+# Let's compare our three data sets to see if they're all the same. This
+# function will return the value TRUE if the two objects called within are
+# identical.
+identical(intermediate_sepal_length, nested_sepal_length)
+
+identical(intermediate_sepal_length, piped_sepal_length)
+
+identical(nested_sepal_length, piped_sepal_length)
+```
+
+Based on the pairwise comparisons of our three data frames, all three methods produced the same object. So which is the best? You'll probably have guessed that I'll say the pipe method is the best and you'll be right. Let's start by comparing the piped method to our nested function. 
+
+First, let's compare the pipes to our nested function method. Earlier we saw an example of nesting one function within another; that example wasn't *that* hard to read if we really had to. I find the example at hand with three nested functions, each with their own extra arguments, much harder to decipher. As I mentioned before, with nested functions you have to read in a way that is counter-intuitive to the way we usually read. The pipes eliminate that problem, allowing us to read our code in a more natural manner, reducing our intellectual overhead.
+
+Now, let's compare the piped method to our intemediate steps method. Look at the functions filter, select, and arrange in each of the two examples we're focusing on. You might notice that in the intermediate steps example, each of those three functions has two arguments: the first is the data frame being used and the second specifies what part of the data frame on which the action should be performed. Why do the functions in the piped example not need to specify what data is being used? The pipe operator essential takes care of informing the next function what data is being used. Convention for *most*, but not all, R functions is for the first argument to specify what data is being used. The pipe takes advantage of that fact and takes care of the work of specifying the first argument for you, which saves you some typing time and space. The pipes are also useful because you don't end up with a lot of intermediate objects that you might not use again. Pipes keep your programming environment clean by eliminating many one-use objects which in turn makes it easier to remember what objects you need for specific tasks.
+
+I've presented the code in order of what I find least preferred to most preferred. Avoid the temptation to nest functions whenever possible, although sometimes nesting 1 function within another is ok (all rules are meant to be broken, right?) if the two functions aren't too complex. Also, you'll find that sometimes it makes sense to break up a pipeline (multiple functions piped together) into smaller pipelines. Don't feel like you need to construct incredibly long, elaborate pipelines. Do what works best for the problems you are trying to address and what makes your code easiest to read. 
+
+That's the pipe! It's a powerful tool for making more legible code, which will make your life and potential collaborator's lives easier. You'll get some practice using the pipe once we've covered more of the functions provided by the tidyverse for manipulating data.
+
+## `dplyr` Verbs
+
+`dplyr` is a package in the `tidyverse` that provides most of the functions we'll use when manipulating and cleaning our data. As long as you have the `tidyverse` package loaded, you'll have `dplyr` loaded too. Many of the functions in `dplyr` and the `tidyverse` as a whole are named as verbs that describe the action they perform. This is a wonderful design feature as it further reduces intellectual overhead required by you when learning new functions or recalling what function to use. Need to filter your data by some critera? Use the `filter()` function. Your data frame contains data from different experimental groups that you need separate summaries for? Use the `group_by()` function and then the `summarise()` function. Let's dive in. 
+
+For these examples we'll be using some slightly modified data of Buprestid collection records in the state of Minnesota. The records in this data are all true (thanks Marie!) but I've added a few columns of artificial data to help illustrate the usefulness of some of the functions we'll use. Here are the first 10 rows of the data.
+
+```{r, echo = TRUE, eval = TRUE}
+# Import our data from the data folder in this project
+# Because we're using an R studio project, R automatically sets the working 
+# directory to the folder our R project is stored in, so we don't have to set
+# our working directory or type a really long file name. The "." in the filename
+# is a shortcut for the name of our working directory.
+buprestid_data <- read.csv("./data/example_buprestid_data.csv")
+head(buprestid_data, n = 10)
+```
+
+There are 8 columns in this dataset. The first column, X, appears to be an artifact from the csv file and is just a column for row numbers. There are columns for the scientific name of the beetle, the county, the number of that species caught in that county, the most recent collection date, and the most recent identification date. I added two columns of simulated data: one for the dry mass of the most recent beetle caught and one for the length of the most recent beetle caught. Don't mistake these columns for real data and try to draw any conclusions from them. They're just a bunch of randomly generated numbers.
+
+### Selecting columns using `select()`
+
+The select function can be used to reduce the number of columns in a data frame if you find your data set has more columns than needed for your current analysis. Let's see a couple examples. First, lets say I just want to columns for scientific name, county, mass, and length
+
+```{r, echo = TRUE, eval = TRUE}
+# Be sure to assign your new data frame to a name that isn't the same as the one
+# you're editing or you'll overwrite the one you're working with.
+mass_length_buprestids <- buprestid_data %>% 
+   select(scientificname, mass, length)
+
+head(mass_length_buprestids)
+```
+
+Now we've got a data frame with just the three columns we're interested in! This works well if you have a lot of columns and you want to reduce your data frame down to just a few. What if you have a lot of columns and only need to remove a few? You can still use select for that! Let's go back to our original data frame and remove that superfluous X column
+
+```{r, echo = TRUE, eval = TRUE}
+# Because we won't need the X column at all in the future, we can overwrite the
+# object we originally stored our data frame in.
+buprestid_data <- buprestid_data %>% 
+   select(-X)
+```
+
+By placing the `-` operator before the column name "X", we tell the select function that we want every column except X. You could add more column names with a `-` before them to remove additional columns. If you have a lot of columns you want to select that are all adjacent to one another, you can use the `:` operator to save some typing. We can use this to select the columns from scientific name through recent_id_date.
+
+```{r, echo = TRUE, eval = TRUE}
+first_4_cols_buprestid <- buprestid_data %>% 
+   select(scientificname:recent_id_date)
+
+head(first_4_cols_buprestid)
+```
+
+The `:` operator allowed us to select all the columns between scientific name and recent_id_date without typing any additional column names. As a reminder, this only works if the columns you want to select are adjacent to each other. You can use a combination of the `:` operator with individual column names if you need to select some columns that are adjacent and some that are not.
+
+*Reminder*: Remember that once you pipe your data to a dplyr function, you don't need to specify the name of the data frame again. In `select()` we just wrote the name of the column with no mention of the data frame. You might be used to writing something like buprestid_data$scientificname to reference a specific column in a data set. 
+
+### Filtering rows using `filter()`
+
+While `select()` allowed us to pick out certain columns from our data set, `filter()` will allow us to reduce the number of rows based on particular criteria. For instance, maybe we want to get a data set of just the collection records in Ramsey county in Minnesota.
+
+```{r, echo = TRUE, eval = TRUE}
+ramsey_co_buprestids <- buprestid_data %>% 
+   filter(county == "ramsey")
+
+head(ramsey_co_buprestids)
+```
+
+Based on the preview of our data set, we can see that we've now only selected the rows that have "ramsey" as the value for county. Filter uses the basic logic functions built into R, so you'll want to familarize yourself with those. In brief, you can read `==` as "is equal to". The filter function in this example is combing through our data and looking for all instances where the value of the county column is equal to "ramsey" and selecting only those rows. You can also use `!=`, which means "is not equal to". We could have written `filter(county != "ramsey")` to remove all observations from Ramsey county from our data set. (*Side note*: these are referred to as logical operators).
+
+The `==` and `!=` logical operators are useful when you have categorical data or need a specific value of a numeric variable (for example, you might want `mass == 10`). You can also use `>`, `>=`, `<`, and `<=` to get numeric values greater than, greater than or equal to, less than, or less than or equal to, respectively. Maybe we want to filter our data so we remove any observations where no buprestids were observed.
+
+```{r, echo = TRUE, eval = TRUE}
+positive_buprestid_counts <- buprestid_data %>% 
+   filter(n > 0)
+
+head(positive_buprestid_counts)
+```
+
+You can also chain together multiple logical arguments to further reduce a dataset. In this example we're interested in only beetles that were actually caught in Ramsey county. In other words, we want to subset our data so that we remove all the records of beetles that weren't observed in Ramsey county.
+
+```{r, echo = TRUE, eval = TRUE}
+ramsey_co_positive_buprestids <- buprestid_data %>% 
+   filter(n > 0 & county == "ramsey")
+
+head(ramsey_co_positive_buprestids)
+```
+
+The `&` operator does what you might guess it does: in this use of `filter()` we're asking R for only rows that have values of n greater than 0 AND the county is "ramsey". You can also use the `|` operator to link two statements. The `|` operator reads as "or". (Sometimes `|` is confusingly referred to as a pipe. In this document I'll only reference it as `|`, not pipe, to avoid confusion.) A researcher in the Twin Cities might be interested in beetle records for both Hennepin and Ramsey counties. They could filter the data so:
+
+```{r, echo = TRUE, eval = TRUE}
+ramsey_hennepin_buprestids <- buprestid_data %>% 
+   filter(county == "ramsey" | county == "hennepin")
+
+head(ramsey_hennepin_buprestids)
+```
+
+This code asks R for only rows that have either "ramsey" or "hennepin" in the county column. You can use the logical operators to chain together complicated logical statements to hone in on exactly the rows you want.
+
+### Arranging your data with `arrange()`
+
+`arrange()` can be used to reorder your data frame. This isn't something I often use in R, because few functions that I can think of require your data to be arranged in a certain way before using them, but it can be useful if you're trying to look through your data. It's also much nicer than trying to sort your data in Excel or another spreadsheet program as there is no danger of accidently sorting some data and not others, resulting in a data catastrophe. Let's tell R that we want to rearrange our data so it's sorted by county.
+
+```{r, echo = TRUE, eval = TRUE}
+# It's okay to overwrite our object here because the only thing we're doing is
+# rearranging our data, not editing it.
+buprestid_data <- buprestid_data %>% 
+   arrange(county)
+
+head(buprestid_data)
+```
+Now our data are sorted alphabetically by county! If you want to reverse the order, you just need to use the `desc()` function with `arrange()` (one of a few instances where it's alright to nest functions! We couldn't use the pipe here anyway). Let's sort by reverse alphabetical order of scientific name.
+
+```{r, eval = TRUE, echo = TRUE}
+buprestid_data <- buprestid_data %>% 
+   arrange(desc(scientificname))
+
+head(buprestid_data)
+```
+
+You can provide additional columns to `arrange()` if you want to sort by more than one column. Maybe we want to sort first by most recent collection date descending, then by county.
+
+```{r, echo = TRUE, eval = TRUE}
+buprestid_data <- buprestid_data %>% 
+   arrange(desc(recent_collect_date), county)
+
+head(buprestid_data)
+```
+
+### "Mutating" new columns with `mutate()`
+
+This is where we start to have some real fun! The `mutate()` function allows us to take existing data and derive other variables from it. To create a new variable, you need to supply a name for the variable and then tell `mutate()` what the new variable will be equal to. For example, in this data let's say the mass variable is recorded in grams. Maybe we want to convert this to kilograms. For this example, we'll work with the positive counts data set so we have mass and length records to work with instead of `NA` values.
+
+```{r, echo = TRUE, eval = TRUE}
+# We can overwrite our original positive_buprestid_counts object becuase we're just adding
+# a new column, not doing anything to existing columns. We could also save it as
+# a new object if we wanted to.
+positive_buprestid_counts <- positive_buprestid_counts %>% 
+   mutate(mass_kg = mass / 1000)
+
+head(positive_buprestid_counts)
+```
+
+You can see we now have our original mass column in grams and a new mass_kg column. (You may need to click the arrow in the display table to see the additional column.)
+
+You can create multiple new columns by providing additional arguments to the `mutate()` function. Let's say our length variable is recorded in millimeters and lets convert that to centimeters. Let's also multiply length and mass to get an index variable for "size".
+
+```{r, eval = TRUE, echo = TRUE}
+positive_buprestid_counts <- positive_buprestid_counts %>% 
+   mutate(length_cm = length / 10,
+          size_index = mass * length)
+
+head(positive_buprestid_counts)
+```
+
+Now there are two more columns! Mutate makes it very easy to add new columns based on existing data
+
+### Summarising data with `summarise()`
+
+We can use `summarise()` to produce quick and easy summaries of our data. The `summarise()` function works similarly to `mutate()` in that you have to provide a name for your summary column and then tell the function how it calculates that value. Let's summarise our count data from the buprestid data by producing a summary table with mean count, median count, number of counts, standard deviation, and the coefficient of variation (standard deviation / mean, this is another measure of how variable our data is like standard deviation but relative to the mean of our data).
+
+```{r, echo = TRUE, eval = FALSE}
+buprestid_summary <- buprestid_data %>% 
+   # We have to tell the function what variable to use to calculate the summary
+   # variable. In our buprestid_data, the variable n is the count data.
+   summarise(mean_count = mean(n),
+             median_count = median(n),
+             num_observations = n(),
+             stdev_count = sd(n),
+             coef_var = sd(n) / mean(n))
+
+buprestid_summary
+```
+
+Now the object buprestid_summary returns a one row table with all of our summary data! We used a new function `n()` to get this summary data. The `n()` function is a special dplyr function that doesn't take any arguments, it automatically knows that you want to use it to count up the number of observations in your data. Becuase we're summarizing our whole dataset, this is just equal to the number of rows in our data. 
+
+So `summarise()` is a great tool for quickly getting summary data, but what if we have different groups in our data we want separate summaries for? Maybe we want to know the mean count for each county in Minnesota. Well, there's a function for that!
+
+### Grouping your data using `group_by()`
+
+The `group_by()` function can be used to tell R what variable it should use to group your data with and this can be paired with `summarise()` to produce summaries for each group. Let's calculate the same summary table as before but this time produce a separate row for each county in the data.
+
+```{r, echo = TRUE, eval = TRUE}
+county_summary <- buprestid_data %>% 
+   group_by(county) %>% 
+   summarise(mean_count = mean(n),
+             median_count = median(n),
+             num_observations = n(),
+             stdev_count = sd(n),
+             coef_var = sd(n) / mean(n))
+
+county_summary
+```
+
+Easy! All we had to do was add one additional line of code. You'll notice in the coefficient of variation variable we have some `NaN` values. This is because we had a mean count of 0 in those counties and you can't divide by 0.
+
+If you have a dataset with multiple levels of grouping, you can pass additional arguments to `group_by` to do hierarchical grouping and produce summaries for all your different levels. We'll use a different dataset to demonstrate this feature. This dataset contains the results of an experiment comparing the effects of different foliage types and time without food on the movement of gypsy moth caterpillars. The dataset we're about to load has 6 columns. The id column provides a unique identifier to each caterpillar observation, the food column specifies what food source the caterpillar was raised on (one of three tree species or an artificial diet), and the starve column identifies how long the insects were starved before the experiments occurred (either 0, 24, or 48 hours). These three columns are categorical and used to identify the treatments each insect underwent. The total_distance column tells us how far the caterpillar crawled in centimeters during a 10 minute trial and the stops column records how often the insect stopped moving. There is also another superfluous column, again named X that we'll remove before we work with the data.
+
+In the case of this experiment, we're interested in summarizing how far each combination of food and starvation time moved and how often they stopped. We'll need to provide both the food and starve column names to `group_by()` so it gives us the summaries we want. Let's calculate the mean and standard error (NOT standard deviation) for each, as well as the number of observations for each combination of treatments. While we're at it, let's rearrange our summary table so it's ordered from smallest mean_total_distance to largest.
+
+```{r, echo = TRUE, eval = TRUE}
+# Load the data
+caterpillar_movement <- read.csv("./data/example_movement_data.csv")
+
+# Summarise the data!
+caterpillar_movement %>% 
+   # Use select to remove the X column
+   select(-X) %>% 
+   # Group_by to organize our data for summary
+   group_by(food, starve) %>% 
+   summarise(mean_total_distance = mean(total_distance),
+             se_total_distance = sd(total_distance) / n(),
+             mean_stops = mean(stops),
+             se_stops = sd(stops) / n(),
+             count = n()) %>% 
+   arrange(mean_total_distance)
+
+```
+And there you have it! In just a few lines of code we've written an analysis that is:
+
+- Reproducible. Anyone can grab this code with this data and get the same results we got.
+- Simple to read. No nested functions, no lines with code running off the screen.
+- Simple to think about. Each function serves a (relatively) clear purpose once you're familiar with them
+- Simple to modify later. We could add more summary variables or rerun the code with additional data without too much trouble. 
+
+### `tidyverse` Practice problems
+
+We'll use some of the datasets built into R to practice using some of these functions. Look for the data_manipulation_cleaning_ANSWERS file if you get stuck or want to check your answers. If you're working directly inside this R markdown file, feel free to type the code in the code chunks. Otherwise I recommend making your own R script and writing out your answers there.
+
+We'll start by using the iris data set. This data set comes preloaded so you can access it easily from any R session by just typing `iris`. 
+```{r, echo = TRUE, eval = TRUE}
+head(iris)
+```
+
+The iris dataset contains four variables which are measurements of sepal and petal length and width for three different species in the *Iris* genus.
+
+1) Write code that creates a separate data frame with just the petal length, petal width, and species variables.
+
+```{r, echo = TRUE, eval = FALSE}
+iris_petals <- iris %>% 
+```
+
+2) Now, repeat what you did in question one but for the sepal variables and also arrange the data frame from lowest to highest sepal width.
+
+```{r, echo = TRUE, eval = FALSE}
+iris_sepals <- iris %>% 
+```
+
+3) Create two new variables that represents the ratio of sepal length to sepal width and petal length to petal width, respectively, and add them to the iris data frame. Save this as an object separate from the overall iris dataset as you'll need it in future questions.
+
+```{r, echo = TRUE, eval = FALSE}
+iris_ratios <- iris %>% 
+```
+
+4) Using the data frame you created in the last problem, provide an overall summary of the data. Use R to find the average for all 6 variables included in this data frame. (I don't want you to use `group_by()` yet.)
+
+```{r, echo = TRUE, eval = FALSE}
+iris_ratios %>% 
+```
+
+5) Now, repeat what you did in question 4 but provided species level means for all 6 variables (this will require using `group_by()`).
+
+```{r, echo = TRUE, eval = FALSE}
+# I'm not starting this one for you :) But you can do it!
+```
+
+
+
