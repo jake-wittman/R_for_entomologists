@@ -1,0 +1,132 @@
+---
+title: "Organizing Your Code"
+author: "Jake Wittman"
+date: "January 8, 2019"
+output: html_document
+---
+
+It can be tempting when writing code to be lazy and disorganized. Resist that temptation! Future you will thank you. To help you write more organized code, I'll demonstrate some examples of good and bad code here. I'll also provide some tips and tricks that aren't immediately obvious, and I'll also introduce how to use R projects to help organize not only your code, but also your files.
+
+## Style guides
+
+The first step to writing organized code is to be consistent and the best way to be consistent is to use a style guide.  Style guides are used by large organizations where many people may be working on the same project(s) to make sure their code is consistent. Consistent coding allows people to work more easily with other's code. It can also help you write clearer code for yourself. Here are a few examples:
+
+- [Google's R style guide](https://google.github.io/styleguide/Rguide.xml)
+- [Hadley Wickham's R style guide](https://style.tidyverse.org/)
+- [Someone else's R style guide](http://jef.works/R-style-guide/)
+
+As an R beginner, you won't understand everything discussed in these style guides so they should be a resource you reference as your R skills grow to see if there's anything you've missed. Pick any style guide that you like best and don't feel the need to follow every single element of the style guide, just make sure you're consistent and deviate in the same way within a single code file. 
+
+I won't spend time going through the details of these style guides but I do want to hilight a few style suggestions that I think are the most important and that you should always follow to make your code more organized and readable.
+
+### Spaces
+
+Use them! Please! Nothing raises my blood pressure more than when I see code like this:
+
+```{r, eval = FALSE, echo = TRUE}
+# Bad = no spaces
+ggplot(data,aes(x=x_variable,y=_yvariable))+geom_point(aes(colour=site))
+
+# Good = spaces
+ggplot(data, aes(x = x_variable, y = y_variable)) + 
+   geom_point(aes(colour = site))
+```
+
+This is so hard to read! WouldyouwanttoreadthisdocumentifIwroteeverythinglikethis? I bet you wouldn't. Use spaces. Check out one of the style guide to see when you should use spaces.
+
+### Long lines of code
+
+You should avoid writing a line of code that is longer than 80 characters. There are several reasons for this:
+
+- Per [Hadley Wickham](https://style.tidyverse.org/syntax.html#object-names), 80 characters per line fits on a printed page.
+- If your code is longer than 80 characters, you may be trying to do too much at once, like nesting 3 or more functions within one another.
+- Long lines of code may require sideways screen scrolling, which is annoying. Imagine trying to read a book written where you had to read the first line of every page, then the second line of every page, and so on.
+- Sometimes code within a single function may require more than 80 characters. Spreading this code over multiple lines rather than containing it in one line enhances readability.
+
+How do you know if your code goes over 80 characters? Rstudio has a neat feature you can turn on that puts a little bar in your script window showing you where 80 characters is. To turn on this feature, go to the "Tools" dropdown menu and click "Global Options". From there, click the "Code" section on the left. Then click on the "Display" tab and check the "Show margin" box and set the "margin column" to 80.
+
+The spacing example from above provides an example of spreading a long line of code out over multiple lines.
+
+```{r, eval = FALSE, echo = TRUE}
+# Bad = this time there are spaces, but the code is too long (just barely)
+ggplot(data, aes(x = x_variable, y = y_variable)) + geom_point(aes(colour = site))
+
+# Good = multiple lines
+ggplot(data, aes(x = x_variable, y = y_variable)) + 
+   geom_point(aes(colour = site))
+```
+
+How do you know where to split lines of code? Split your code among lines so it reads in a uniform way and at least tries to follow a pattern. Here are a few examples, it's not important you understand what the code is doing but just pay attention to the patterns (or lack thereof) of dividing up the lines of code.
+
+```{r, eval = FALSE, echo = TRUE}
+# Bad = no consistent pattern for splitting code between lines, also goes over
+# 80 characters on occasion.
+ggplot(data=dat2016, aes(m_total_path)) + geom_histogram(fill="white", colour="black") + facet_grid(treat_id ~ .) +
+  theme_bw() + theme(panel.grid.major = element_blank(),
+                     panel.grid.minor = element_blank(), axis.line = element_line(colour = "black")) + ggtitle("Total Path Distance") +
+  labs(x="Total Path Distance (m)", y="# of Larvae")
+
+# Good = Consistent splitting pattern by starting a new line after each +. Also 
+# in the theme() function, starting a new line after each comma to keep each
+# line under 80 characters
+ggplot(data = dat2016, aes(m_total_path)) +
+   geom_histogram(fill = "white", colour = "black") +
+   facet_grid(treat_id ~ .) +
+   theme_bw() +
+   theme(panel.grid.major = element_blank(),
+         panel.grid.minor = element_blank(),
+         axis.line = element_line(colour = "black")) +
+   ggtitle("Total Path Distance") +
+   labs(x = "Total Path Distance (m)", y = "# of Larvae")
+
+
+# Bad = no consistency, too many nested functions, too long
+mean_avg_dist2016 <- as.data.frame(as.list(aggregate(m_total_path ~ treat_id, data=dat2016_movers, 
+                                                     FUN = function(x) c(mean = mean(x), n = length(x), se = sd(x)/sqrt(length(x))))))
+
+# Better = consistent line splitting but too many functions nested inside one
+# another. Putting closing parenthesis on different lines can also help
+# compartmentalize code
+mean_avg_dist2016 <-
+   as.data.frame(
+      as.list(
+         aggregate(m_total_path ~ treat_id,
+                   data = dat2016_movers,
+                   FUN = function(x) c(mean = mean(x),
+                                       n = length(x),
+                                       se = sd(x) / sqrt(length(x)
+                                                         )
+                                       )
+                   )
+         )
+      )
+
+# Best = Consistent line splitting without nesting too many functions enhances
+# readability.
+# In the first function aggregate, we give each argument it's own line.
+# When specify the custom function to use (FUN = ...), we split each of those
+# functions onto their own line. Close paranthesis mark the end of functions
+aggregate_data <- aggregate(m_total_path ~ treat_id,
+                            data = dat2016_movers,
+                            FUN = function(x) c(mean = mean(x),
+                                                n = length(x),
+                                                se = sd(x) / sqrt(length(x))
+                                                )
+                            )
+# Then we can take what we produced above and use it below, in a readable form.
+mean_avg_dist2016 <- as.data.frame(as.list(aggregate_data))
+```
+
+When splitting up long lines of code, indenting is your friend. Use indents to make your code line up in ways that are sensible and make it easier to read. 
+
+There are a lot of smaller details to consider that are mentioned in a style guide, like conventions for naming objects and files and such, but we won't get into these here. In this section we took a look at some of the nitty-gritty aspect of code writing but for the next few sections, we're going to zoom out above the code level and talk more generally organizing your files utilizing R projects.
+
+## Organizing your work
+
+Introduce projects
+Discuss some of the applications to use in your code
+Talk about folders one might put in a project
+
+## Splitting up your code into different files and/or sections
+
+When you first begin writing code, it can be difficult to come up with a coherent system for organizing your code within a script file and to know how many script files you should use. When I first started, my default was to write incredibly long scripts that loaded the data, cleaned the data, analyzed the data, and visualized the data and not necessarily with any clear flow to the script. It was nearly impossible for me to figure out what I had done or remember where I had done it. I generally try to organize my code into two or three script files and use Rstudio's "Insert section" feature to help organize these files

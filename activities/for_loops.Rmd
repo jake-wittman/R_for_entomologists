@@ -1,0 +1,34 @@
+---
+title: "for_loops"
+author: "Jake Wittman"
+date: "January 4, 2019"
+output: html_document
+---
+
+## For loops
+
+For loops can be a bit of a contentious issue in the R community. If you search for "for loops R" on Google, you'll find plenty of examples on how to use them and just as many people arguing that they should be avoided. I won't be delving into this argument much in this document other than to say that for loops can be powerful tools for manipulating data in an intuitive way, especially for people who are new to programming. The downside to for loops is that they can be slow compared to other R programming alternatives, depending on how you implement them and the problem you're trying to solve. Slow in computer programming is a relative term though and really depends on the size of the data you are working with. If you are working with millions of rows of data or thousands of different data sets simultaneously (what I call capital B&D Big Data), you probably will find the time it takes for loops to run to be prohibitive. If you're like most of the people I work with though, you might have a lot of data but not capital B&D Big Data. In this case, for loops will probably work just fine. They may not be as fast as other alternatives but because the data you work with is so much smaller, the difference in running time becomes negligible. 
+
+One downside to for loops in R is that they can promote really sloppy code that can be very hard to read. This can definitely affect readability (and therefore reproducibility). Most readability issues related to for loops will occur because for loops can be nested (we'll cover this later). You should avoid the temptation to nest multiple for loops instead seek out an alternative method if reproducibility and readability are among your goals. This tutorial will emphasize making your for loops as readable as possible so they can remain a useful tool in your R toolbox.
+
+## What is a for loop?
+
+A for loop is a programming concept which allows us to "loop" or move through our data in a specific way and as we move through our data, perform an operation on each part of the data. For loops can be used for a multitude of objectives but are really useful when you need to derive variables that rely on the value of a variable that came previously (PUT AN EXAMPLE HERE) or for splitting your data and doing something specific with it (like producing maps of what counties different species of buprestid beetles have been caught in). Let's see a basic example to illustrate how a for loop works.
+
+```{r, eval = TRUE, echo = FALSE}
+numbers <- 1:10
+
+for (i in numbers) {
+  print(i * 2)
+}
+```
+
+If you're familiar with R, you probably understand that by using the `:` operator, we told R to generate a vector of all the whole numbers between 1 and 10 and stored it those numbers in the object `numbers`. How do we read the for loop though and decipher what happened? First, let's note that `for` is a special type of construct in R, it's not a function (i.e. it doesn't take input and produce output like `mean()` does). The `for` is used to control the flow of code. There are other flow control constructs, like `if`/`else`, `while`, `repeat` that we may cover later, but for now we're going to focus on `for`. 
+
+So, how does `for` control the flow of our code? To figure out what `for` needs to do, it's going to look inside the parentheses that follow the `for` command. In our code, this was `(i in numbers)`. Putting it all together `for (i in numbers)`, can be read as "for every object/piece/component 'i' in the object 'numbers', do something". In the `for` instructions, "i" is an index. That just means that "i" will at some point take on every value contained in our object `numbers`, and we can see that if we look at the code that follows the `for (i in numbers)` piece. After our closed parenthesis there are a pair of curly brackets `{}` with code in between them. The curly braces are used to tell R that the code between them should all be run together as part of one loop. In our example, we only have one line of code but you can put many lines of code into a for loop. 
+
+Inside our curly braces we have the code `print(i * 2)`. The `print()` function, for those that haven't seen it, just tells R to "print" whatever is inside the function to the console. It's a way to have output returned to you immediately to see what happened. Inside `print()`, we're multiplying our index `i` by 2. Once the multiplication is complete, the result is returned to the console. R knows what values to assign to `i` because we told it to before the curly brackets. So, what R is doing is assigned the first value from our `numbers` object, which is 1 to the object `i`. Then, R is multiplying `i` times 2 and printing the result. Once R has printed our result, it goes back to the start of the for loop and basically asks "are there any more values `i` needs to become?". If R hasn't looped through all the values stored in `numbers` then it will go on to the next value and repeat the process of multiply `i` by 2 and printing the result. Once it's reached the last value stored in `numbers`, R stops running the for loop and would move on to any code outside the curly brackets, if there were any. So in this way, we tell R to move through all the numbers 1 through 10, multiply them by 2 one at a time, and then print the result. It's a highly contrived example (and you'd never want to actually use a for loop to do this. Instead just type `numbers * 2`) but it serves to illustrate how the for loop works.
+
+## A brief detour into indexing
+
+Before we can move onto more complex applications of the for loop, we need to lay a little foundation around this idea of indexing. 

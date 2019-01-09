@@ -4,6 +4,10 @@ output:
   html_document:
     df_print: paged
 ---
+## Notes for Jake
+
+- Add something about how the tidyverse functions tend to produce tibbles.
+
 This is an R markdown document. R markdown documents are a wonderful tool for weaving text together with code and figures. These documents can be output in a number of formats, like PDF, HTML, word documents, and even slide show presentations. You can type regularly in this document like I am here. There are basic formatting options available like:
 
 ## Headers!
@@ -128,11 +132,11 @@ sd_tibia_length
 
 This might be confusing at first. Didn't I just say that we want to try to write code that reads like English and also reflects the order in which R will execute the code? Isn't storing our output in the object the last thing R would do? Why are we putting that first in our code? We sacrifice a little bit of intuitive readability here to speed up our work flow as we write more lines of code. In my experience, I've found that I spend more time referencing the objects I've saved some output as ("what did I call that again?", "where did I calculate that?", etc.) than re-reading exactly what I did. Think of the assignment operator as a placeholder dividing your code into two separate sides, left of the assignment operator and right of the assignemnt operator. By putting the object I've saved something as on the left side, it makes it easier for me to find it again in the code or quickly scan what I've written to see my output. The readability of what you did on the right hand side of the assignment operator becomes important when you're returning to code you wrote a long time ago or are sharing code with someone who is looking at it for the first time. This arrangement strikes a balance between your needs while writing code, and your's or someone else's needs when looking at the code later.
 
-*Side note*: The pipe operator `%>%` can be kind of frustrating to type. Thankfully there's a keyboard shortcut for it in R Studio! If you're using a Windows machine use **ctrl + shit + m** to insert the pipe operator. While we're at it, there's a shortcut for the assignment operator `<-` too! Again, on a Windows machine type **alt + -**. (Sorry, I don't know the Mac OS shortcuts. A google search might help?)
+*Side note*: The pipe operator `%>%` can be kind of frustrating to type. Thankfully there's a keyboard shortcut for it in R Studio! If you're using a Windows machine use **ctrl + shift + m** to insert the pipe operator. While we're at it, there's a shortcut for the assignment operator `<-` too! Again, on a Windows machine type **alt + -**. (Sorry, I don't know the Mac OS shortcuts. A google search might help?)
 
 ## Chaining multiple functions together with the pipe
 
-You can use the pipe operator to link multiple functions together, which is often useful when summarizing data. Here's a brief example. I'll briefly explain what these functions do if you haven't seen them before, but we'll cover them in more depth in a bit. In this example, I'll show you three methods of achieving the same result to highlight again why pipes are useful or preferred over other methods. In the first method, we'll save every intermediate step as an object on our way to our final goal without using any pipes. The second method will nest multiple functions to avoid saving unneeded intermediate objects while still not using pipes. The final method will use pipes.
+You can use the pipe operator to link multiple functions together, which is often useful when summarizing data. Here's a brief example. I'll briefly explain what these functions do if you haven't seen them before, but we'll cover them in more depth in a bit. In this example, I'll show you three methods of achieving the same result to highlight again why pipes are useful or preferred over other methods. The first method will nest multiple functions to avoid saving unneeded intermediate objects while still not using pipes.In the second method, we'll save every intermediate step as an object on our way to our final goal without using any pipes.  The final method will use pipes.
 
 In this example, we're using the `iris` dataset that is built into R. If you type `iris` into your console, it'll print out the dataset. This data has observations on sepal length and width and petal length and width for three different species of irises. This example is a little contrived, but it illustrates my point. Imagine you want to take the iris data set and are interested in only the data on *Iris setosa*. Furthermore, you don't care about anything but the sepal length of *Iris setosa*. And for some reason, you want the data ordered from shortest sepal length to longest sepal length for *Iris setosa*. Here are three ways you could accomplish this using dplyr verbs that let you **filter** your data based on certain criteria, **select** particular columns from your data, and **arrange** the data according to a certain variable: 
 
@@ -172,7 +176,7 @@ Based on the pairwise comparisons of our three data frames, all three methods pr
 
 First, let's compare the pipes to our nested function method. Earlier we saw an example of nesting one function within another; that example wasn't *that* hard to read if we really had to. I find the example at hand with three nested functions, each with their own extra arguments, much harder to decipher. As I mentioned before, with nested functions you have to read in a way that is counter-intuitive to the way we usually read. The pipes eliminate that problem, allowing us to read our code in a more natural manner, reducing our intellectual overhead.
 
-Now, let's compare the piped method to our intemediate steps method. Look at the functions filter, select, and arrange in each of the two examples we're focusing on. You might notice that in the intermediate steps example, each of those three functions has two arguments: the first is the data frame being used and the second specifies what part of the data frame on which the action should be performed. Why do the functions in the piped example not need to specify what data is being used? The pipe operator essential takes care of informing the next function what data is being used. Convention for *most*, but not all, R functions is for the first argument to specify what data is being used. The pipe takes advantage of that fact and takes care of the work of specifying the first argument for you, which saves you some typing time and space. The pipes are also useful because you don't end up with a lot of intermediate objects that you might not use again. Pipes keep your programming environment clean by eliminating many one-use objects which in turn makes it easier to remember what objects you need for specific tasks.
+Now, let's compare the piped method to our intemediate steps method. Look at the functions filter, select, and arrange in each of the two examples we're focusing on. You might notice that in the intermediate steps example, each of those three functions has two arguments: the first is the data frame being used and the second specifies what part of the data frame on which the action should be performed. Why do the functions in the piped example not need to specify what data is being used? The pipe operator essentially takes care of informing the next function what data is being used. Convention for *most*, but not all, R functions is for the first argument to specify what data is being used. The pipe takes advantage of that fact and takes care of the work of specifying the first argument for you, which saves you some typing time and space. The pipes are also useful because you don't end up with a lot of intermediate objects that you might not use again. Pipes keep your programming environment clean by eliminating many one-use objects which in turn makes it easier to remember what objects you need for specific tasks.
 
 I've presented the code in order of what I find least preferred to most preferred. Avoid the temptation to nest functions whenever possible, although sometimes nesting 1 function within another is ok (all rules are meant to be broken, right?) if the two functions aren't too complex. Also, you'll find that sometimes it makes sense to break up a pipeline (multiple functions piped together) into smaller pipelines. Don't feel like you need to construct incredibly long, elaborate pipelines. Do what works best for the problems you are trying to address and what makes your code easiest to read. 
 
@@ -180,9 +184,23 @@ That's the pipe! It's a powerful tool for making more legible code, which will m
 
 ## `dplyr` Verbs
 
-`dplyr` is a package in the `tidyverse` that provides most of the functions we'll use when manipulating and cleaning our data. As long as you have the `tidyverse` package loaded, you'll have `dplyr` loaded too. Many of the functions in `dplyr` and the `tidyverse` as a whole are named as verbs that describe the action they perform. This is a wonderful design feature as it further reduces intellectual overhead required by you when learning new functions or recalling what function to use. Need to filter your data by some critera? Use the `filter()` function. Your data frame contains data from different experimental groups that you need separate summaries for? Use the `group_by()` function and then the `summarise()` function. Let's dive in. 
+`dplyr` is a package in the `tidyverse` that provides most of the functions we'll use when manipulating and cleaning our data. As long as you have the `tidyverse` package loaded, you'll have `dplyr` loaded too. Many of the functions in `dplyr` and the `tidyverse` as a whole are named as verbs that describe the action they perform. This is a wonderful design feature as it further reduces intellectual overhead required by you when learning new functions or recalling what function to use. Need to filter your data by some critera? Use the `filter()` function. Your data frame contains data from different experimental groups that you need separate summaries for? Use the `group_by()` function and then the `summarise()` function. 
 
-For these examples we'll be using some slightly modified data of Buprestid collection records in the state of Minnesota. The records in this data are all true (thanks Marie!) but I've added a few columns of artificial data to help illustrate the usefulness of some of the functions we'll use. Here are the first 10 rows of the data.
+*Side note*: When referencing data in this tutorial, I often refer to it as a "data frame". A data frame is a special type of object in R that is analagous to a spreadsheet; basically, it's just an object used to store data in named columns. You may notice that many of the `dplyr` functions we use return what is called a "tibble". A "tibble" is just the tidyverse version of a data frame. If you've worked with data frames before in R, many of the same operations you would do with a data frame will also work on a tibble. However, if the tibble thing is throwing you off, it's pretty simple to convert a tibble back to a data frame using `as.data.frame()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+# Here imagine we use filter on our data frame named data and save it as an
+# object called "some_tibble". Because we used a dplyr verb, the output is a 
+# tibble.
+some_tibble <- data %>% filter()
+
+# Now, use as.data.frame() on some_tibble) and assign it to an object. This 
+# object can have the same name as your tibble or you can rename it to something
+# new, as in this example.
+some_data_frame <- as.data.frame(some_tibble)
+```
+
+Let's dive in. For these examples we'll be using some slightly modified data of Buprestid collection records in the state of Minnesota. The records in this data are all true (thanks Marie!) but I've added a few columns of artificial data to help illustrate the usefulness of some of the functions we'll use. Here are the first 10 rows of the data.
 
 ```{r, echo = TRUE, eval = TRUE}
 # Import our data from the data folder in this project
@@ -194,11 +212,11 @@ buprestid_data <- read.csv("./data/example_buprestid_data.csv")
 head(buprestid_data, n = 10)
 ```
 
-There are 8 columns in this dataset. The first column, X, appears to be an artifact from the csv file and is just a column for row numbers. There are columns for the scientific name of the beetle, the county, the number of that species caught in that county, the most recent collection date, and the most recent identification date. I added two columns of simulated data: one for the dry mass of the most recent beetle caught and one for the length of the most recent beetle caught. Don't mistake these columns for real data and try to draw any conclusions from them. They're just a bunch of randomly generated numbers.
+There are 8 columns in this dataset. The first column, X, appears to be an artifact from the csv file and is just a column for row numbers. There are columns for the scientific name of the beetle, the county, the number of that species caught in that county, the most recent collection date, and the most recent identification date. I've added two columns of simulated data: one for the dry mass of the most recent beetle caught and one for the length of the most recent beetle caught. Don't mistake these columns for real data and try to draw any conclusions from them. They're just a bunch of randomly generated numbers.
 
 ### Selecting columns using `select()`
 
-The select function can be used to reduce the number of columns in a data frame if you find your data set has more columns than needed for your current analysis. Let's see a couple examples. First, lets say I just want to columns for scientific name, county, mass, and length
+The select function can be used to reduce the number of columns in a data frame if you find your data set has more columns than needed for your current analysis. Let's see a couple examples. First, lets say I just want the columns for scientific name, county, mass, and length.
 
 ```{r, echo = TRUE, eval = TRUE}
 # Be sure to assign your new data frame to a name that isn't the same as the one
@@ -229,7 +247,7 @@ head(first_4_cols_buprestid)
 
 The `:` operator allowed us to select all the columns between scientific name and recent_id_date without typing any additional column names. As a reminder, this only works if the columns you want to select are adjacent to each other. You can use a combination of the `:` operator with individual column names if you need to select some columns that are adjacent and some that are not.
 
-*Reminder*: Remember that once you pipe your data to a dplyr function, you don't need to specify the name of the data frame again. In `select()` we just wrote the name of the column with no mention of the data frame. You might be used to writing something like buprestid_data$scientificname to reference a specific column in a data set. 
+*Reminder*: Remember that once you pipe your data to a dplyr function, you don't need to specify the name of the data frame again. In `select()` we just wrote the name of the column with no mention of the data frame. You might be used to writing something like `buprestid_data$scientificname` to reference a specific column in a data set. 
 
 ### Filtering rows using `filter()`
 
@@ -253,11 +271,11 @@ positive_buprestid_counts <- buprestid_data %>%
 head(positive_buprestid_counts)
 ```
 
-You can also chain together multiple logical arguments to further reduce a dataset. In this example we're interested in only beetles that were actually caught in Ramsey county. In other words, we want to subset our data so that we remove all the records of beetles that weren't observed in Ramsey county.
+You can also chain together multiple logical arguments to further reduce a dataset. In this example we're interested in finding any beetles that we have more than two specimens of from Ramsey county. 
 
 ```{r, echo = TRUE, eval = TRUE}
 ramsey_co_positive_buprestids <- buprestid_data %>% 
-   filter(n > 0 & county == "ramsey")
+   filter(n > 2 & county == "ramsey")
 
 head(ramsey_co_positive_buprestids)
 ```
@@ -335,7 +353,7 @@ Now there are two more columns! Mutate makes it very easy to add new columns bas
 
 We can use `summarise()` to produce quick and easy summaries of our data. The `summarise()` function works similarly to `mutate()` in that you have to provide a name for your summary column and then tell the function how it calculates that value. Let's summarise our count data from the buprestid data by producing a summary table with mean count, median count, number of counts, standard deviation, and the coefficient of variation (standard deviation / mean, this is another measure of how variable our data is like standard deviation but relative to the mean of our data).
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 buprestid_summary <- buprestid_data %>% 
    # We have to tell the function what variable to use to calculate the summary
    # variable. In our buprestid_data, the variable n is the count data.
@@ -349,6 +367,28 @@ buprestid_summary
 ```
 
 Now the object buprestid_summary returns a one row table with all of our summary data! We used a new function `n()` to get this summary data. The `n()` function is a special dplyr function that doesn't take any arguments, it automatically knows that you want to use it to count up the number of observations in your data. Becuase we're summarizing our whole dataset, this is just equal to the number of rows in our data. 
+
+Sometimes you may run into issues when using summarise if your data contain `NA` values or you are using functions that require additional arguments beyond just the data for them to work. For example, say we wanted to summarise the mean dry mass and length of our full buprestid data.
+
+```{r, echo = TRUE, eval = TRUE}
+mass_length_summary <- buprestid_data %>% 
+   summarise(mean_mass = mean(mass),
+             mean_length = mean(length))
+
+mass_length_summary
+```
+
+Hmm, shoot. We get `NA` values for our means. This is because when there are no records for a beetle in a county, they can't have a mass or a length so instead there is an `NA` observation there. The mean function (as well as other functions, like the standard deviation function) don't know what to do with `NA` values unless we tell them. To handle these `NA` values, we have to tell R to remove them with the `na.rm = TRUE` argument that can be provided to `mean()`.
+
+```{r, echo = TRUE, eval = TRUE}
+mass_length_summary <- buprestid_data %>% 
+   summarise(mean_mass = mean(mass, na.rm = TRUE),
+             mean_length = mean(length, na.rm = TRUE))
+
+mass_length_summary
+```
+
+Here you can see we succesfully returned mean values for these two variables. If you're mutating or summarising data and need to provide additional arguments to the function, you add them on just like you would normally.
 
 So `summarise()` is a great tool for quickly getting summary data, but what if we have different groups in our data we want separate summaries for? Maybe we want to know the mean count for each county in Minnesota. Well, there's a function for that!
 
@@ -392,12 +432,14 @@ caterpillar_movement %>%
    arrange(mean_total_distance)
 
 ```
+
 And there you have it! In just a few lines of code we've written an analysis that is:
 
 - Reproducible. Anyone can grab this code with this data and get the same results we got.
 - Simple to read. No nested functions, no lines with code running off the screen.
 - Simple to think about. Each function serves a (relatively) clear purpose once you're familiar with them
 - Simple to modify later. We could add more summary variables or rerun the code with additional data without too much trouble. 
+- Built from basic building blocks. The packages in the tidyverse are written with a coherent design philosophy, which allows them to play well with each other and makes your code quite modular. You can use many of these functions in different orders and with additional functions and produce elegant code.
 
 ### `tidyverse` Practice problems
 
@@ -441,4 +483,165 @@ iris_ratios %>%
 ```
 
 
+## Modifying data with `case_when()`
 
+The `case_when()` function is, in my mind, a little bit more of an advanced cleaning tool, which is why I've positioned it here at the end of this tutorial. This function is a powerful tool for cleaning data based on a set of conditions or constructing new variables in conjunction with mutate. Let's return to the buprestid data we've been working with to illustrate one example. First, take a look at the first 6 rows of this data set when it's arranged by scientific name.
+
+```{r, echo = TRUE, eval = TRUE}
+# First few rows of the buprestid data
+buprestid_data <- buprestid_data %>% 
+   arrange(scientificname)
+
+head(buprestid_data)
+
+# Let's look at all the unique entries for county in our dataset too to check
+# for more errors. The unique() function looks at all the values in our data
+# frame buprestid_data, specifically in the column "county" and returns all
+# the unique values.
+unique(buprestid_data$county)
+```
+Look at the `county` column. You might notice that we have entries for both "anoka/isanti" and "aonka/isanti" counties. The second case, "aonka/isanti" is a typo - there is no Aonka county in Minnesota. If you look through the data set, you'll see that this typo is repeated. You could further examine the counties and find that there are entries for "saint anthony park". That's not a county, it's a park in Ramsey county, so we'll want to fix that too. Your first inclination might be to go into Excel and fix it, but you shouldn't. If this data is updated in the future and someone makes a similar typo, you will have to once again go into Excel and fix it. Instead, we can write a few lines of code that check for common typos we know might exist in our data and fix them using `mutate()` and `case_when()`.
+
+```{r, echo = TRUE, eval = TRUE}
+# Currently county is a factor, we need to change the variable type to string
+# so we can work with it. If you try to run the code before changing it to a
+# string you'll get an error. This isn't something you would be expected to know
+# right away and is the type of knowledge you pick up through trial and error 
+# and lots of google searches.
+buprestid_data$county <- as.character(buprestid_data$county)
+
+# Now let's fix our typo.
+buprestid_data <- buprestid_data %>% 
+   mutate(county = case_when(county == "aonka/isanti" ~ "anoka/isanti",
+                             county == "saint anthony park" ~ "ramsey",
+                             county == county ~ county
+   ))
+
+# Check that our typos are fixed
+unique(buprestid_data$county)
+```
+
+If you look through the list of unique county names, you'll find that there are no more "aonka" typos or records for "st anthony park". Let's unpack how we did that. Using `mutate()`, we told R that we wanted to make edits to the county variable by putting "county" on the left side of that first `=` operator in `mutate()`. We could've made a new variable by naming it something other than "county", but we wanted to fix some errors (aka clean our data), so we kept the name the same. Then we told R that we wanted county to be edited according to certain conditions, provided using `case_when()`. In side `case_when()`, we specified that whenever county was equal to the value "aokna/isanti" (`county == "aonka/isanti"`), we wanted R to change it to "anoka/isanti" using the `~`. Unfortunately, `~` is used in different ways in different functions so there isn't a consistent definition for `~` between functions. In the case of `case_when()`, the `~` can be read as "change to". So the first line of our `case_when()` function could be read as "when `county` is equal to 'aonka/isanti', change `county` to 'anoka/isanti'". 
+
+The second line of our `case_when()` function then can be read as "when `county` is equal to 'saint anthony park', change `county` to 'ramsey'". So those two lines take care of our common typos. The last line is needed because there are a lot of cases where `county` isn't equal to "aonka/isanti" or "saint anthony park". R is not intelligent enough to know that once we've gone through the two specific cases specified that we want the rest to remain the same, so we have to tell it that by specifying that "when county is equal to [any other value of county than the two we specified previously], keep it as is". When using `case_when()` it's important you specify your cases in order from most specific to most general because R will evaluate the code in the order you provide them. 
+
+The `case_when()` function can also be used with numeric variables. If we look at the range of beetle mass present in our data, we'll see that we have observations of beetle masses between about 30 grams and 80 grams.
+
+```{r, echo = TRUE, eval = TRUE}
+range(buprestid_data$mass, na.rm = TRUE)
+```
+
+Now, you would never want to take a continuous variable like mass and turn it into a discrete variable like size ("small", "medium", "large") for a statistical analysis because you'd lose information. However, there may be other reasons, say for data  visualization, that you might want to categorize the mass variable into discrete categories. We can use `case_when()` to do this.
+
+```{r, echo = TRUE, eval = TRUE}
+buprestid_data <- buprestid_data %>% 
+   # Make our new "size" variable
+   mutate(size = case_when(mass >= 62 ~ "large",
+                           mass < 62 ~ "medium",
+                           mass < 46 ~ "small")) %>% 
+   # Pipe the results to a few different functions so we can display what I need
+   # to show you the relevant results.
+   select(size, mass, everything()) %>% 
+   arrange(desc(n))
+
+head(buprestid_data)
+```
+
+Hmm, something appears to have gone wrong during this code chunk. Lines 4, 5, and 6 of the above output should all be classified as size "small" based on their mass but they weren't. That's because we didn't go from most specific to most general in our `case_when()` function. `mass < 62` is a more general condition than `mass < 46` so we need to reverse the order we wrote our `case_when()` arguments in. (This also illustrates why it's always important to check results of any code you run! R won't catch these kinds of errors for you.)
+
+
+
+```{r, echo = TRUE, eval = TRUE}
+buprestid_data <- buprestid_data %>% 
+   # Make our new "size" variable
+   mutate(size = case_when(mass < 46 ~ "small",
+                           mass < 62 ~ "medium",
+                           mass >= 62 ~ "large")) %>% 
+   # Pipe the results to a few different functions so we can display what I need
+   # to show you the relevant results.
+   select(size, mass, everything()) %>% 
+   arrange(desc(n))
+
+head(buprestid_data)
+```
+
+That's better! Now we've classified all our masses into size categories.
+
+### `case_when()` practice problem
+
+6) Here's a histogram showing the distribution of sepal lengths for all the iris observations in the iris dataset. It looks like the sepal lengths tend to fall between 4 and 8 centimeters. Use `case_when()` to create a new `size_sepal_length` variable, similar to the above example. Decide how many categories are appropriate and where to place the breaks between categories. Also, edit the `Species` variable so instead of just listing the species name, it lists both genus and species (for example, "setosa" would become "Iris setosa". The genus for each case is "Iris"). *Bonus points* if you can create the `size_sepal_length` variable and edit the `Species` variable within a single use of `mutate()`.
+
+```{r, echo = FALSE, eval = TRUE}
+hist(iris$Sepal.Length)
+```
+
+
+
+## Answers to practice questions
+
+For each practice question provided, it's possible more than one way to complete the problem exists. I show only one method for each question.
+
+1) Write code that creates a separate data frame with just the petal length, petal width, and species variables.
+
+```{r, echo = TRUE, eval = TRUE}
+iris_petals <- iris %>% 
+   select(Petal.Length:Species)
+```
+
+2) Now, repeat what you did in question one but for the sepal variables and also arrange the data frame from lowest to highest sepal width.
+
+```{r, echo = TRUE, eval = TRUE}
+iris_sepals <- iris %>% 
+   select(Sepal.Length, Sepal.Width, Species) %>% 
+   arrange(Sepal.Width)
+```
+
+3) Create two new variables that represents the ratio of sepal length to sepal width and petal length to petal width, respectively, and add them to the iris data frame. Save this as an object separate from the overall iris dataset as you'll need it in future questions.
+
+```{r, echo = TRUE, eval = TRUE}
+iris_ratios <- iris %>% 
+   mutate(ratio_sepal = Sepal.Length / Sepal.Width,
+          ratio_petal = Petal.Length / Petal.Width)
+```
+
+4) Using the data frame you created in the last problem, provide an overall summary of the data. Use R to find the average for all 6 variables included in this data frame. (I don't want you to use `group_by()` yet.)
+
+```{r, echo = TRUE, eval = TRUE}
+iris_ratios %>% 
+   summarise(mean_sepal_length = mean(Sepal.Length),
+             mean_sepal_width = mean(Sepal.Width),
+             mean_ratio_sepal = mean(ratio_sepal),
+             mean_petal_length = mean(Petal.Length),
+             mean_petal_width = mean(Petal.Width),
+             mean_ratio_petal = mean(ratio_petal))
+```
+
+5) Now, repeat what you did in question 4 but provided species level means for all 6 variables (this will require using `group_by()`).
+
+```{r, echo = TRUE, eval = FALSE}
+iris_ratios %>% 
+   group_by(Species) %>% 
+   summarise(mean_sepal_length = mean(Sepal.Length),
+             mean_sepal_width = mean(Sepal.Width),
+             mean_ratio_sepal = mean(ratio_sepal),
+             mean_petal_length = mean(Petal.Length),
+             mean_petal_width = mean(Petal.Width),
+             mean_ratio_petal = mean(ratio_petal))
+```
+
+6) Here's a histogram showing the distribution of sepal lengths for all the iris observations in the iris dataset. It looks like the sepal lengths tend to fall between 4 and 8 centimeters. Use `case_when()` to create a new `size_sepal_length` variable, similar to the above example. Decide how many categories are appropriate and where to place the breaks between categories. Also, edit the `Species` variable so instead of just listing the species name, it lists both genus and species (for example, "setosa" would become "Iris setosa". The genus for each case is "Iris"). *Bonus points* if you can create the `size_sepal_length` variable and edit the `Species` variable within a single use of `mutate()`.
+
+```{r, echo = TRUE, eval = TRUE}
+# Find our unique values for Species
+unique(iris$Species)
+
+# Mutate new variable and edit Species variable
+iris %>% 
+   mutate(size_sepal_length = case_when(Sepal.Length < 5 ~ "small",
+                                        Sepal.Length < 7 ~ "medium",
+                                        Sepal.Length >= 7 ~ "large"),
+          Species = case_when(Species == "setosa" ~ "Iris setosa",
+                              Species == "versicolor" ~ "Iris versicolor",
+                              Species == "virginica" ~ "Iris virginica"))
+
+```
