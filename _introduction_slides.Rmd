@@ -53,7 +53,7 @@ To benefit others:
 
 ## How did I learn more R?
 
->- I started small
+>- I started small.
 >- With every project, I picked (at least) one new thing to try to do in R instead of (insert program name here).
 >- I asked for help.
 
@@ -233,7 +233,7 @@ But most importantly:
 >- Be consistent and considerate.
 >- Use white space! (Line breaks or spaces)
 
-## How are we going to do this?
+## How do we do this?
 
 <center>
 
@@ -263,7 +263,7 @@ This is the most important part and the reason why I recommend learning R throug
 
 >- Open source statistical programming language released in 2000.
 >- "Base R" is the foundation of the R language and is what you install when you first install R.
->- Base R is very powerful and you could do almost everything we will do in Base R.
+>- Base R is very powerful and you could do almost everything you need in Base R.
 
 ## So why aren't we going to emphasize Base R?
 
