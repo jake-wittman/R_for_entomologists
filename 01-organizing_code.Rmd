@@ -174,4 +174,4 @@ These days, I like to have one R script for cleaning my data and saving the outp
 knitr::include_graphics("images/example_rcode_sections.png")
 ```
 
-The menu I have pulled up at the bottom is a list of all the code sections I inserted in bold. If you write custom functions, it also allows me to jump to where those functions were written. 
+The menu I have pulled up at the bottom is a list of all the code sections I inserted in bold. If you write custom functions, it also allows me to jump to where those functions were written. You can also see on line 24 of the code where the "Insert Section" feature has inserted a section I named "Data cleaning". The row of "-" following the title make it easy to find code sections when scrolling through your scripts.

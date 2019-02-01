@@ -56,7 +56,7 @@ You can also specify a vector of positions or column names, assign that vector t
 
 ```{r}
 length.columns <- c("Sepal.Length", "Petal.Length")
-iris[, length.columns]
+head(iris[, length.columns])
 ```
 
 By leaving the row portion of the index blank, we returned all rows. R then checked the `length.columns` object to see what was stored there, so it knew to return `Sepal.Length` and `Petal.Length`. Being able to use variables inside indexing will allow us to access more of the power available from for loops.

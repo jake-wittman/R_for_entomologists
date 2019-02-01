@@ -76,7 +76,7 @@ Now, our code lines up with both our expectations for how it should be read (lef
 
 ## Pipe examples
 
-You've been measuring the hind tibia length of 20 *Cerceris* wasps and you want to know the mean, median, and standard deviation. In the below, we'll generate some random values for hind tibia length and then use the pipe to get the outputs we want. (The `rnorm` function is used to generate random values from a normal distribution.)
+You've been measuring the hind tibia length of 20 *Cerceris* wasps and you want to know the mean, median, and standard deviation. In the code below, we'll generate some random values for hind tibia length and then use the pipe to get the outputs we want. (The `rnorm` function is used to generate random values from a normal distribution.)
 
 ```{r pipe_examples, echo = TRUE, eval = TRUE}
 # Get 20 random samples from a normal distribution with mean 12 and standard
@@ -193,7 +193,9 @@ Let's dive in. For these examples we'll be using some slightly modified data of 
 # our working directory or type a really long file name. The "." in the filename
 # is a shortcut for the name of our working directory.
 buprestid_data <- read.csv("./data/example_buprestid_data.csv")
-head(buprestid_data, n = 10)
+# we'll be using the following head() function to look at the first n rows
+# of some of the data we work with throughout this document
+head(buprestid_data, n = 10) 
 ```
 
 There are 8 columns in this dataset. The first column, X, appears to be an artifact from the csv file and is just a column for row numbers. There are columns for the scientific name of the beetle, the county, the number of that species caught in that county, the most recent collection date, and the most recent identification date. I've added two columns of simulated data: one for the dry mass of the most recent beetle caught and one for the length of the most recent beetle caught. Don't mistake these columns for real data and try to draw any conclusions from them. They're just a bunch of randomly generated numbers.
@@ -233,6 +235,34 @@ The `:` operator allowed us to select all the columns between scientific name an
 
 *Reminder*: Remember that once you pipe your data to a dplyr function, you don't need to specify the name of the data frame again. In `select()` we just wrote the name of the column with no mention of the data frame. You might be used to writing something like `buprestid_data$scientificname` to reference a specific column in a data set. 
 
+There are a number of helper functions you can use within `select()` to save you some typing. You can take a look at these helper functions by typing `?tidyselect::select_helpers` into the console (assuming you have the `tidyverse` package installed). I'll only demonstrate the use of a few in the code chunk below; I leave it up to you to experiment with some of other select helper functions. For this example, I've simulated some fake data from 10 different sites. There are three variables (numbered one through three) measuring something. I leave it up to your imagination to decide what those variables are measuring. Then, I simulated the counts of three different species of Buprestid beetles found at each site. Maybe I want to subset the data so I have the site ID variable and variables one through three and in another subset, have just the site ID and the counts for beetles in the *Agrilus* genus. Here's how you could use the select helper functions to accomplish that task.
+
+```{r}
+# Let's make a fake data frame with which to experiment
+fake_data <- data.frame(
+   site = seq(1:10),
+   var1 = runif(10, 0, 1),
+   var2 = rnorm(10, 5, 2),
+   var3 = c(rep("A", times = 5), rep("B", times = 5)),
+   agrilus.bilineatus.count = rpois(10, 7),
+   agrilus.planipennis.count = rpois(10, 15),
+   brachys.aerosus.count = rpois(10, 1)
+)
+
+# first subset of the just "var#" variables
+fake_data_subset1 <- fake_data %>% 
+   select(site, contains("var"))
+head(fake_data_subset1) 
+
+# Compare that data set to this one
+fake_data_subset2 <- fake_data %>% 
+   select(site, starts_with("agrilus"))
+head(fake_data_subset2)
+```
+
+We could have actually used a couple different select helper functions to accomplish either task. For example, in getting just the columns that corresponding to *Agrilus* counts, we could have used `contains("agrilus")` instead of `starts_with("agrilus")`.
+
+
 ### Filtering rows using `filter()`
 
 While `select()` allowed us to pick out certain columns from our data set, `filter()` will allow us to reduce the number of rows based on particular criteria. For instance, maybe we want to get a data set of just the collection records in Ramsey county in Minnesota.
@@ -264,7 +294,7 @@ ramsey_co_positive_buprestids <- buprestid_data %>%
 head(ramsey_co_positive_buprestids)
 ```
 
-The `&` operator does what you might guess it does: in this use of `filter()` we're asking R for only rows that have values of n greater than 0 AND the county is "ramsey". You can also use the `|` operator to link two statements. The `|` operator reads as "or". (Sometimes `|` is confusingly referred to as a pipe. In this document I'll only reference it as `|`, not pipe, to avoid confusion.) A researcher in the Twin Cities might be interested in beetle records for both Hennepin and Ramsey counties. They could filter the data so:
+The `&` operator does what you might guess it does: in this use of `filter()` we're asking R for only rows that have values of n greater than 0 AND the county is "ramsey". You can also use the `|` operator to link two statements. The `|` operator reads as "or". (Historically `|` is referred to as a pipe, which may be confusing for some. In this document I'll only reference it as `|`, not pipe, to avoid confusion.) A researcher in the Twin Cities might be interested in beetle records for both Hennepin and Ramsey counties. They could filter the data so:
 
 ```{r, echo = TRUE, eval = TRUE}
 ramsey_hennepin_buprestids <- buprestid_data %>% 
