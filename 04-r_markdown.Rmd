@@ -1,0 +1,21 @@
+---
+title: "Untitled"
+author: "Jake Wittman"
+date: "January 10, 2019"
+output: html_document
+---
+# R Markdown
+
+This is an R markdown document. R markdown documents are a wonderful tool for weaving text together with code and figures. These documents can be output in a number of formats, like PDF, HTML, word documents, and even slide show presentations. You can type regularly in this document like I am here. There are basic formatting options available like:
+
+## Headers!
+
+- lists
+- **bold**
+- *italics*
+- Equations: $4 = x + 2$
+- many others!
+
+We won't be going in depth into R markdown in this activity, I just wanted to introduce it because we'll be using markdown to work through these activities. To learn more about R markdown, google "R markdown cheat sheet" or go to this [link](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf). 
+
+*Side note*: Because the document we're working in right now is an html_notebook (see the "output" section at the top of the R markdown document), you can preview what this document will look like as an HTML file by hitting "Preview" up above or pressing **ctrl + shift + k**.
