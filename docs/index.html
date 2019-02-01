@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>R For Entomologists</title>
+  <meta name="description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="R For Entomologists" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="images/cover.png" />
+  <meta property="og:description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety." />
+  <meta name="github-repo" content="wittja01/r_for_entomologists" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="R For Entomologists" />
+  
+  <meta name="twitter:description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety." />
+  <meta name="twitter:image" content="images/cover.png" />
+
+<meta name="author" content="Jake Wittman">
+
+
+<meta name="date" content="2019-02-01">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+
+<link rel="next" href="organizing-your-work-and-your-code.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html"><i class="fa fa-check"></i><b>2</b> Organizing Your Work and Your Code</a><ul>
+<li class="chapter" data-level="2.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#style-guides"><i class="fa fa-check"></i><b>2.1</b> Style guides</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#spaces"><i class="fa fa-check"></i><b>2.1.1</b> Spaces</a></li>
+<li class="chapter" data-level="2.1.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#long-lines-of-code"><i class="fa fa-check"></i><b>2.1.2</b> Long lines of code</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#organizing-your-work"><i class="fa fa-check"></i><b>2.2</b> Organizing your work</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#rstudio-projects"><i class="fa fa-check"></i><b>2.2.1</b> RStudio Projects</a></li>
+<li class="chapter" data-level="2.2.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#organizing-your-rstudio-project-folder"><i class="fa fa-check"></i><b>2.2.2</b> Organizing your RStudio Project folder</a></li>
+<li class="chapter" data-level="2.2.3" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#splitting-up-your-code"><i class="fa fa-check"></i><b>2.2.3</b> Splitting up your code</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html"><i class="fa fa-check"></i><b>3</b> Introduction to Data Cleaning and Manipulation</a><ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#background-required"><i class="fa fa-check"></i><b>3.1</b> Background required</a></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#lets-get-started"><i class="fa fa-check"></i><b>3.2</b> Let’s get started!</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#the-pipe"><i class="fa fa-check"></i><b>3.3</b> The pipe</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#pipe-examples"><i class="fa fa-check"></i><b>3.4</b> Pipe examples</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#chaining-multiple-functions-together-with-the-pipe"><i class="fa fa-check"></i><b>3.5</b> Chaining multiple functions together with the pipe</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#nesting-multiple-functions"><i class="fa fa-check"></i><b>3.5.1</b> Nesting multiple functions</a></li>
+<li class="chapter" data-level="3.5.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#saving-every-intermediate-step-without-any-pipes"><i class="fa fa-check"></i><b>3.5.2</b> Saving every intermediate step without any pipes</a></li>
+<li class="chapter" data-level="3.5.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#using-multiple-pipes"><i class="fa fa-check"></i><b>3.5.3</b> Using multiple pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#dplyr-verbs"><i class="fa fa-check"></i><b>3.6</b> <code>dplyr</code> Verbs</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#selecting-columns-using-select"><i class="fa fa-check"></i><b>3.6.1</b> Selecting columns using <code>select()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#filtering-rows-using-filter"><i class="fa fa-check"></i><b>3.6.2</b> Filtering rows using <code>filter()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#arranging-your-data-with-arrange"><i class="fa fa-check"></i><b>3.6.3</b> Arranging your data with <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#mutating-new-columns-with-mutate"><i class="fa fa-check"></i><b>3.6.4</b> “Mutating” new columns with <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#summarising-data-with-summarise"><i class="fa fa-check"></i><b>3.6.5</b> Summarising data with <code>summarise()</code></a></li>
+<li class="chapter" data-level="3.6.6" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#grouping-your-data-using-group_by"><i class="fa fa-check"></i><b>3.6.6</b> Grouping your data using <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.6.7" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#tidyverse-practice-problems"><i class="fa fa-check"></i><b>3.6.7</b> <code>tidyverse</code> Practice problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#modifying-data-with-case_when"><i class="fa fa-check"></i><b>3.7</b> Modifying data with <code>case_when()</code></a><ul>
+<li class="chapter" data-level="3.7.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#case_when-practice-problem"><i class="fa fa-check"></i><b>3.7.1</b> <code>case_when()</code> practice problem</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#answers-to-practice-questions"><i class="fa fa-check"></i><b>3.8</b> Answers to practice questions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="for-loops.html"><a href="for-loops.html"><i class="fa fa-check"></i><b>4</b> For loops</a><ul>
+<li class="chapter" data-level="4.1" data-path="for-loops.html"><a href="for-loops.html#what-is-a-for-loop"><i class="fa fa-check"></i><b>4.1</b> What is a for loop?</a></li>
+<li class="chapter" data-level="4.2" data-path="for-loops.html"><a href="for-loops.html#a-brief-detour-into-indexing"><i class="fa fa-check"></i><b>4.2</b> A brief detour into indexing</a></li>
+<li class="chapter" data-level="4.3" data-path="for-loops.html"><a href="for-loops.html#c"><i class="fa fa-check"></i><b>4.3</b> C</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>5</b> R Markdown</a><ul>
+<li class="chapter" data-level="5.1" data-path="r-markdown.html"><a href="r-markdown.html#headers"><i class="fa fa-check"></i><b>5.1</b> Headers!</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R For Entomologists</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">R For Entomologists</h1>
+<p class="author"><em>Jake Wittman</em></p>
+<p class="date"><em>2019-02-01</em></p>
+</div>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<div class="figure"><span id="fig:unnamed-chunk-1"></span>
+<img src="images/cover.png" alt="Some entomologists, ready to learn R!" width="361" />
+<p class="caption">
+Figure 1.1: Some entomologists, ready to learn R!
+</p>
+</div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="organizing-your-work-and-your-code.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub", "_main.mobi"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

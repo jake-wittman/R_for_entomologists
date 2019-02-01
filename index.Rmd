@@ -25,6 +25,7 @@ output:
 description: "An attempt to push entomologists up the R learning curve and reduce R anxiety."
 github-repo: wittja01/r_for_entomologists
 cover-image: "images/cover.png"
+output_dir: "docs"
 
 ---
 # Introduction
