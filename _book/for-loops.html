@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>4 For loops | R For Entomologists</title>
+  <meta name="description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety.">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="4 For loops | R For Entomologists" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:image" content="images/cover.png" />
+  <meta property="og:description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety." />
+  <meta name="github-repo" content="wittja01/r_for_entomologists" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 For loops | R For Entomologists" />
+  
+  <meta name="twitter:description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety." />
+  <meta name="twitter:image" content="images/cover.png" />
+
+<meta name="author" content="Jake Wittman">
+
+
+<meta name="date" content="2019-02-01">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="introduction-to-data-cleaning-and-manipulation.html">
+<link rel="next" href="r-markdown.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html"><i class="fa fa-check"></i><b>2</b> Organizing Your Work and Your Code</a><ul>
+<li class="chapter" data-level="2.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#style-guides"><i class="fa fa-check"></i><b>2.1</b> Style guides</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#spaces"><i class="fa fa-check"></i><b>2.1.1</b> Spaces</a></li>
+<li class="chapter" data-level="2.1.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#long-lines-of-code"><i class="fa fa-check"></i><b>2.1.2</b> Long lines of code</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#organizing-your-work"><i class="fa fa-check"></i><b>2.2</b> Organizing your work</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#rstudio-projects"><i class="fa fa-check"></i><b>2.2.1</b> RStudio Projects</a></li>
+<li class="chapter" data-level="2.2.2" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#organizing-your-rstudio-project-folder"><i class="fa fa-check"></i><b>2.2.2</b> Organizing your RStudio Project folder</a></li>
+<li class="chapter" data-level="2.2.3" data-path="organizing-your-work-and-your-code.html"><a href="organizing-your-work-and-your-code.html#splitting-up-your-code"><i class="fa fa-check"></i><b>2.2.3</b> Splitting up your code</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html"><i class="fa fa-check"></i><b>3</b> Introduction to Data Cleaning and Manipulation</a><ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#background-required"><i class="fa fa-check"></i><b>3.1</b> Background required</a></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#lets-get-started"><i class="fa fa-check"></i><b>3.2</b> Let’s get started!</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#the-pipe"><i class="fa fa-check"></i><b>3.3</b> The pipe</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#pipe-examples"><i class="fa fa-check"></i><b>3.4</b> Pipe examples</a></li>
+<li class="chapter" data-level="3.5" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#chaining-multiple-functions-together-with-the-pipe"><i class="fa fa-check"></i><b>3.5</b> Chaining multiple functions together with the pipe</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#nesting-multiple-functions"><i class="fa fa-check"></i><b>3.5.1</b> Nesting multiple functions</a></li>
+<li class="chapter" data-level="3.5.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#saving-every-intermediate-step-without-any-pipes"><i class="fa fa-check"></i><b>3.5.2</b> Saving every intermediate step without any pipes</a></li>
+<li class="chapter" data-level="3.5.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#using-multiple-pipes"><i class="fa fa-check"></i><b>3.5.3</b> Using multiple pipes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#dplyr-verbs"><i class="fa fa-check"></i><b>3.6</b> <code>dplyr</code> Verbs</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#selecting-columns-using-select"><i class="fa fa-check"></i><b>3.6.1</b> Selecting columns using <code>select()</code></a></li>
+<li class="chapter" data-level="3.6.2" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#filtering-rows-using-filter"><i class="fa fa-check"></i><b>3.6.2</b> Filtering rows using <code>filter()</code></a></li>
+<li class="chapter" data-level="3.6.3" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#arranging-your-data-with-arrange"><i class="fa fa-check"></i><b>3.6.3</b> Arranging your data with <code>arrange()</code></a></li>
+<li class="chapter" data-level="3.6.4" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#mutating-new-columns-with-mutate"><i class="fa fa-check"></i><b>3.6.4</b> “Mutating” new columns with <code>mutate()</code></a></li>
+<li class="chapter" data-level="3.6.5" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#summarising-data-with-summarise"><i class="fa fa-check"></i><b>3.6.5</b> Summarising data with <code>summarise()</code></a></li>
+<li class="chapter" data-level="3.6.6" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#grouping-your-data-using-group_by"><i class="fa fa-check"></i><b>3.6.6</b> Grouping your data using <code>group_by()</code></a></li>
+<li class="chapter" data-level="3.6.7" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#tidyverse-practice-problems"><i class="fa fa-check"></i><b>3.6.7</b> <code>tidyverse</code> Practice problems</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#modifying-data-with-case_when"><i class="fa fa-check"></i><b>3.7</b> Modifying data with <code>case_when()</code></a><ul>
+<li class="chapter" data-level="3.7.1" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#case_when-practice-problem"><i class="fa fa-check"></i><b>3.7.1</b> <code>case_when()</code> practice problem</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="introduction-to-data-cleaning-and-manipulation.html"><a href="introduction-to-data-cleaning-and-manipulation.html#answers-to-practice-questions"><i class="fa fa-check"></i><b>3.8</b> Answers to practice questions</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="for-loops.html"><a href="for-loops.html"><i class="fa fa-check"></i><b>4</b> For loops</a><ul>
+<li class="chapter" data-level="4.1" data-path="for-loops.html"><a href="for-loops.html#what-is-a-for-loop"><i class="fa fa-check"></i><b>4.1</b> What is a for loop?</a></li>
+<li class="chapter" data-level="4.2" data-path="for-loops.html"><a href="for-loops.html#a-brief-detour-into-indexing"><i class="fa fa-check"></i><b>4.2</b> A brief detour into indexing</a></li>
+<li class="chapter" data-level="4.3" data-path="for-loops.html"><a href="for-loops.html#c"><i class="fa fa-check"></i><b>4.3</b> C</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>5</b> R Markdown</a><ul>
+<li class="chapter" data-level="5.1" data-path="r-markdown.html"><a href="r-markdown.html#headers"><i class="fa fa-check"></i><b>5.1</b> Headers!</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R For Entomologists</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="for-loops" class="section level1">
+<h1><span class="header-section-number">4</span> For loops</h1>
+<p>For loops can be a bit of a contentious issue in the R community. If you search for “for loops R” on Google, you’ll find plenty of examples on how to use them and just as many people arguing that they should be avoided. I won’t be delving into this argument much in this document other than to say that for loops can be powerful tools for manipulating data in an intuitive way, especially for people who are new to programming. The downside to for loops is that they can be slow compared to other R programming alternatives, depending on how you implement them and the problem you’re trying to solve. Slow in computer programming is a relative term though and really depends on the size of the data you are working with. If you are working with millions of rows of data or thousands of different data sets simultaneously (what I call capital B&amp;D Big Data), you probably will find the time it takes for loops to run prohibitive. If you’re like most of the people I work with though, you might have a lot of data but not capital B&amp;D Big Data. In this case, for loops will probably work just fine. They may not be as fast as other alternatives but because the data you work with is so much smaller, the difference in running time becomes negligible.</p>
+<p>One downside to for loops in R is that they can promote really sloppy code. This can definitely affect readability (and therefore reproducibility). Most readability issues related to for loops will occur because for loops can be nested (we’ll cover this later). You should avoid the temptation to nest multiple for loops; instead seek out an alternative method if reproducibility and readability are among your goals. This tutorial will emphasize making your for loops as readable as possible so they can remain a useful tool in your R toolbox.</p>
+<div id="what-is-a-for-loop" class="section level2">
+<h2><span class="header-section-number">4.1</span> What is a for loop?</h2>
+<p>A for loop is a programming concept which allows us to “loop” or move through our data in a specific way and as we move through our data, perform an operation on each part of the data. For loops can be used for a multitude of objectives but are really useful when you need to derive variables that rely on the value of a variable that came previously (like figuring out the turn angle between two successive movements by an insect) or for splitting your data and doing something specific with it (like producing maps of what counties different species of buprestid beetles have been caught in). Let’s see a basic example to illustrate how a for loop works.</p>
+<pre><code>## [1] 2
+## [1] 4
+## [1] 6
+## [1] 8
+## [1] 10
+## [1] 12
+## [1] 14
+## [1] 16
+## [1] 18
+## [1] 20</code></pre>
+<p>If you’re familiar with R, you probably understand that by using the <code>:</code> operator, we told R to generate a vector of all the whole numbers between 1 and 10 and stored those numbers in the object <code>numbers</code>. How do we read the for loop though and decipher what happened? First, let’s note that <code>for</code> is a special type of construct in R, it’s not a function (i.e. it doesn’t take input and produce output like <code>mean()</code> does). The <code>for</code> is used to control the flow of code. There are other flow control constructs, like <code>if</code>/<code>else</code>, <code>while</code>, <code>repeat</code> that we may cover later, but for now we’re going to focus on <code>for</code>.</p>
+<p>So, how does <code>for</code> control the flow of our code? To figure out what <code>for</code> needs to do, it’s going to look inside the parentheses that follow the <code>for</code> command. In our code, this was <code>(i in numbers)</code>. Putting it all together <code>for (i in numbers)</code>, can be read as “for every object/piece/component ‘i’ in the object ‘numbers’, do something”. In the <code>for</code> instructions, “i” is an index. That just means that “i” will at some point take on every value contained in our object <code>numbers</code>, and we can see that if we look at the code that follows the <code>for (i in numbers)</code> piece. After our closed parenthesis there are a pair of curly brackets <code>{}</code> with code in between them. The curly braces are used to tell R that the code between them should all be run together as part of one loop. In our example, we only have one line of code but you can put many lines of code into the curly braces of a for loop.</p>
+<p>Inside our curly braces we have the code <code>print(i * 2)</code>. The <code>print()</code> function, for those that haven’t seen it, just tells R to “print” whatever is inside the function to the console. It’s a way to have output returned to you immediately to see what happened. Inside <code>print()</code>, we’re multiplying our index <code>i</code> by 2. Once the multiplication is complete, the result is returned to the console by <code>print()</code>. R knows what values to assign to <code>i</code> because we told it to before the curly brackets. So, R is assigning the first value from our <code>numbers</code> object, which is 1, to the object <code>i</code>. Then, R is multiplying <code>i</code> times 2 and printing the result. Once R has printed our result, it goes back to the start of the for loop and basically asks “are there any more values <code>i</code> needs to become?”. If R hasn’t looped through all the values stored in <code>numbers</code> then it will go on to the next value and repeat the process of multiplying <code>i</code> by 2 and printing the result. Once it’s reached the last value stored in <code>numbers</code>, R stops running the for loop and would move on to any code outside the curly brackets, if there were any. Putting it all together, we tell R to move through all the numbers 1 through 10, multiply them by 2 one at a time, and then print the result. It’s a highly contrived example (and you’d never want to actually use a for loop to do this. Instead just type <code>numbers * 2</code>) but it serves to illustrate how the for loop works.</p>
+</div>
+<div id="a-brief-detour-into-indexing" class="section level2">
+<h2><span class="header-section-number">4.2</span> A brief detour into indexing</h2>
+<p>Before we can move onto more complex applications of the for loop, we need to lay a little foundation around the idea of indexing. Indexing is a tool that allows you to pull out specific subsets of an object based on their location or name. Indexing is done by placing square brackets <code>[]</code> after the object you want to index. For example, we can use indexing to pull out row 10 of the iris dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris[<span class="dv">10</span>, ]</code></pre></div>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 10          4.9         3.1          1.5         0.1  setosa</code></pre>
+<p>We can specify that we want a specific column from row 10 by adding the position of the column or the name of the column after the comma in the <code>[]</code>. Let’s look at the Sepal.Width for the iris in row 10.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris[<span class="dv">10</span>, <span class="dv">2</span>]</code></pre></div>
+<pre><code>## [1] 3.1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris[<span class="dv">10</span>, <span class="st">&quot;Sepal.Width&quot;</span>]</code></pre></div>
+<pre><code>## [1] 3.1</code></pre>
+<p>Both methods return the value for Sepal.Width in row 10. You can use the <code>:</code> operator or <code>c()</code> to specify a range or selection of rows and columns as well.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">iris[<span class="dv">10</span><span class="op">:</span><span class="dv">20</span>, <span class="kw">c</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;Petal.Length&quot;</span>)]</code></pre></div>
+<pre><code>##    Sepal.Length Petal.Length
+## 10          4.9          1.5
+## 11          5.4          1.5
+## 12          4.8          1.6
+## 13          4.8          1.4
+## 14          4.3          1.1
+## 15          5.8          1.2
+## 16          5.7          1.5
+## 17          5.4          1.3
+## 18          5.1          1.4
+## 19          5.7          1.7
+## 20          5.1          1.5</code></pre>
+<p>You can also specify a vector of positions or column names, assign that vector to an object and then reference that object when indexing. Let’s say we want to look at just the columns in the iris dataset associated with length.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">length.columns &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;Petal.Length&quot;</span>)
+iris[, length.columns]</code></pre></div>
+<pre><code>##     Sepal.Length Petal.Length
+## 1            5.1          1.4
+## 2            4.9          1.4
+## 3            4.7          1.3
+## 4            4.6          1.5
+## 5            5.0          1.4
+## 6            5.4          1.7
+## 7            4.6          1.4
+## 8            5.0          1.5
+## 9            4.4          1.4
+## 10           4.9          1.5
+## 11           5.4          1.5
+## 12           4.8          1.6
+## 13           4.8          1.4
+## 14           4.3          1.1
+## 15           5.8          1.2
+## 16           5.7          1.5
+## 17           5.4          1.3
+## 18           5.1          1.4
+## 19           5.7          1.7
+## 20           5.1          1.5
+## 21           5.4          1.7
+## 22           5.1          1.5
+## 23           4.6          1.0
+## 24           5.1          1.7
+## 25           4.8          1.9
+## 26           5.0          1.6
+## 27           5.0          1.6
+## 28           5.2          1.5
+## 29           5.2          1.4
+## 30           4.7          1.6
+## 31           4.8          1.6
+## 32           5.4          1.5
+## 33           5.2          1.5
+## 34           5.5          1.4
+## 35           4.9          1.5
+## 36           5.0          1.2
+## 37           5.5          1.3
+## 38           4.9          1.4
+## 39           4.4          1.3
+## 40           5.1          1.5
+## 41           5.0          1.3
+## 42           4.5          1.3
+## 43           4.4          1.3
+## 44           5.0          1.6
+## 45           5.1          1.9
+## 46           4.8          1.4
+## 47           5.1          1.6
+## 48           4.6          1.4
+## 49           5.3          1.5
+## 50           5.0          1.4
+## 51           7.0          4.7
+## 52           6.4          4.5
+## 53           6.9          4.9
+## 54           5.5          4.0
+## 55           6.5          4.6
+## 56           5.7          4.5
+## 57           6.3          4.7
+## 58           4.9          3.3
+## 59           6.6          4.6
+## 60           5.2          3.9
+## 61           5.0          3.5
+## 62           5.9          4.2
+## 63           6.0          4.0
+## 64           6.1          4.7
+## 65           5.6          3.6
+## 66           6.7          4.4
+## 67           5.6          4.5
+## 68           5.8          4.1
+## 69           6.2          4.5
+## 70           5.6          3.9
+## 71           5.9          4.8
+## 72           6.1          4.0
+## 73           6.3          4.9
+## 74           6.1          4.7
+## 75           6.4          4.3
+## 76           6.6          4.4
+## 77           6.8          4.8
+## 78           6.7          5.0
+## 79           6.0          4.5
+## 80           5.7          3.5
+## 81           5.5          3.8
+## 82           5.5          3.7
+## 83           5.8          3.9
+## 84           6.0          5.1
+## 85           5.4          4.5
+## 86           6.0          4.5
+## 87           6.7          4.7
+## 88           6.3          4.4
+## 89           5.6          4.1
+## 90           5.5          4.0
+## 91           5.5          4.4
+## 92           6.1          4.6
+## 93           5.8          4.0
+## 94           5.0          3.3
+## 95           5.6          4.2
+## 96           5.7          4.2
+## 97           5.7          4.2
+## 98           6.2          4.3
+## 99           5.1          3.0
+## 100          5.7          4.1
+## 101          6.3          6.0
+## 102          5.8          5.1
+## 103          7.1          5.9
+## 104          6.3          5.6
+## 105          6.5          5.8
+## 106          7.6          6.6
+## 107          4.9          4.5
+## 108          7.3          6.3
+## 109          6.7          5.8
+## 110          7.2          6.1
+## 111          6.5          5.1
+## 112          6.4          5.3
+## 113          6.8          5.5
+## 114          5.7          5.0
+## 115          5.8          5.1
+## 116          6.4          5.3
+## 117          6.5          5.5
+## 118          7.7          6.7
+## 119          7.7          6.9
+## 120          6.0          5.0
+## 121          6.9          5.7
+## 122          5.6          4.9
+## 123          7.7          6.7
+## 124          6.3          4.9
+## 125          6.7          5.7
+## 126          7.2          6.0
+## 127          6.2          4.8
+## 128          6.1          4.9
+## 129          6.4          5.6
+## 130          7.2          5.8
+## 131          7.4          6.1
+## 132          7.9          6.4
+## 133          6.4          5.6
+## 134          6.3          5.1
+## 135          6.1          5.6
+## 136          7.7          6.1
+## 137          6.3          5.6
+## 138          6.4          5.5
+## 139          6.0          4.8
+## 140          6.9          5.4
+## 141          6.7          5.6
+## 142          6.9          5.1
+## 143          5.8          5.1
+## 144          6.8          5.9
+## 145          6.7          5.7
+## 146          6.7          5.2
+## 147          6.3          5.0
+## 148          6.5          5.2
+## 149          6.2          5.4
+## 150          5.9          5.1</code></pre>
+<p>By leaving the row portion of the index blank, we returned all rows. R then checked the <code>length.columns</code> object to see what was stored there, so it knew to return <code>Sepal.Length</code> and <code>Petal.Length</code>. Being able to use variables inside indexing will allow us to access more of the power available from for loops.</p>
+</div>
+<div id="c" class="section level2">
+<h2><span class="header-section-number">4.3</span> C</h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-data-cleaning-and-manipulation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="r-markdown.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": true,
+"linkedin": true,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub", "_main.mobi"],
+"toc": {
+"collapse": "subsection"
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
