@@ -25,7 +25,7 @@
 <meta name="author" content="Jake Wittman">
 
 
-<meta name="date" content="2019-02-01">
+<meta name="date" content="2019-02-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -296,9 +296,9 @@ Figure 2.1: An example of a file directory for an R project.
 <h3><span class="header-section-number">2.2.2</span> Organizing your RStudio Project folder</h3>
 <p>So, now that you have your RStudio project folder set up, how should you organize your files within it to help you stay organized? I generally have one folder for each of the following things: data, R code scripts, manuscript/thesis chapter drafts associated with the project, and figures produced in R for the projects. There might be other folders too, like a “images” folder for pictures from the experiment or field sites. Here’s an image of one such directory:</p>
 <div class="figure"><span id="fig:unnamed-chunk-7"></span>
-<img src="images/example_folders.png" alt="An example of a file directory for an R project." width="130%" />
+<img src="images/example_folders.png" alt="An example of folders within an R project folder." width="130%" />
 <p class="caption">
-Figure 2.2: An example of a file directory for an R project.
+Figure 2.2: An example of folders within an R project folder.
 </p>
 </div>
 </div>
@@ -307,12 +307,12 @@ Figure 2.2: An example of a file directory for an R project.
 <p>When you first begin writing code, it can be difficult to come up with a coherent system for organizing your code within a script file and to know how many script files you should use. When I first started, my default was to write incredibly long scripts that loaded the data, cleaned the data, analyzed the data, and visualized the data and not necessarily with any clear flow to the script. It was nearly impossible for me to figure out what I had done or remember where I had done it.</p>
 <p>These days, I like to have one R script for cleaning my data and saving the output as “cleaned_data.csv” and one script for analyzing my data and producing figures. Depending on the number of analyses and figures being produced, that last file could reasonably be split into two. Within a script, I use Rstudio’s “Insert section” feature to help organize these files (ctrl/cmd + shift + r). This command will insert text into your R script that breaks it up into sections which you can jump between using the menu at the bottom of the script screen. Here’s an example of what I mean (ignore the fact that I didn’t follow the 80 character rule. This script was written before I started following that rule.):</p>
 <div class="figure"><span id="fig:unnamed-chunk-8"></span>
-<img src="images/example_rcode_sections.png" alt="An example of a file directory for an R project." width="130%" />
+<img src="images/example_rcode_sections.png" alt="Using R Studio functionality to split code into chunks that are easy to navigate between." width="130%" />
 <p class="caption">
-Figure 2.3: An example of a file directory for an R project.
+Figure 2.3: Using R Studio functionality to split code into chunks that are easy to navigate between.
 </p>
 </div>
-<p>The menu I have pulled up at the bottom is a list of all the code sections I inserted in bold. If you write custom functions, it also allows me to jump to where those functions were written.</p>
+<p>The menu I have pulled up at the bottom is a list of all the code sections I inserted in bold. If you write custom functions, it also allows me to jump to where those functions were written. You can also see on line 24 of the code where the “Insert Section” feature has inserted a section I named “Data cleaning”. The row of “-” following the title make it easy to find code sections when scrolling through your scripts.</p>
 
 </div>
 </div>

@@ -25,7 +25,7 @@
 <meta name="author" content="Jake Wittman">
 
 
-<meta name="date" content="2019-02-01">
+<meta name="date" content="2019-02-04">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -167,8 +167,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">3.1</span> Background required</h2>
 <p>This document assumes you are comfortable with installing and loading packages, reading data into R as a data.frame, assigning values to objects, and using basic functions like <code>mean()</code> and <code>sum()</code>.</p>
 <p>Before we can start, we’ll need to make sure you have the <code>tidyverse</code> package installed. Run the code below to install the package and load it (don’t worry about understanding the code if you don’t, that’s not the point of this tutorial).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tidyverse)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)
-<span class="kw">library</span>(tidyverse)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tidyverse)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
 </div>
 <div id="lets-get-started" class="section level2">
 <h2><span class="header-section-number">3.2</span> Let’s get started!</h2>
@@ -213,7 +217,7 @@ y</code></pre></div>
 </div>
 <div id="pipe-examples" class="section level2">
 <h2><span class="header-section-number">3.4</span> Pipe examples</h2>
-<p>You’ve been measuring the hind tibia length of 20 <em>Cerceris</em> wasps and you want to know the mean, median, and standard deviation. In the below, we’ll generate some random values for hind tibia length and then use the pipe to get the outputs we want. (The <code>rnorm</code> function is used to generate random values from a normal distribution.)</p>
+<p>You’ve been measuring the hind tibia length of 20 <em>Cerceris</em> wasps and you want to know the mean, median, and standard deviation. In the code below, we’ll generate some random values for hind tibia length and then use the pipe to get the outputs we want. (The <code>rnorm</code> function is used to generate random values from a normal distribution.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get 20 random samples from a normal distribution with mean 12 and standard</span>
 <span class="co"># deviation 3.</span>
 hind_tibia_length &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">mean =</span> <span class="dv">12</span>, <span class="dt">sd =</span> <span class="dv">3</span>)
@@ -305,7 +309,9 @@ some_data_frame &lt;-<span class="st"> </span><span class="kw">as.data.frame</sp
 <span class="co"># our working directory or type a really long file name. The &quot;.&quot; in the filename</span>
 <span class="co"># is a shortcut for the name of our working directory.</span>
 buprestid_data &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;./data/example_buprestid_data.csv&quot;</span>)
-<span class="kw">head</span>(buprestid_data, <span class="dt">n =</span> <span class="dv">10</span>)</code></pre></div>
+<span class="co"># we&#39;ll be using the following head() function to look at the first n rows</span>
+<span class="co"># of some of the data we work with throughout this document</span>
+<span class="kw">head</span>(buprestid_data, <span class="dt">n =</span> <span class="dv">10</span>) </code></pre></div>
 <pre><code>##     X   scientificname       county n recent_collect_date recent_id_date
 ## 1   1 Acmaeodera acuta       aitkin 0                  NA             NA
 ## 2   2 Acmaeodera acuta        anoka 0                  NA             NA
@@ -364,6 +370,41 @@ buprestid_data &lt;-<span class="st"> </span>buprestid_data <span class="op">%&g
 ## 6 Acmaeodera acuta     beltrami 0                  NA             NA</code></pre>
 <p>The <code>:</code> operator allowed us to select all the columns between scientific name and recent_id_date without typing any additional column names. As a reminder, this only works if the columns you want to select are adjacent to each other. You can use a combination of the <code>:</code> operator with individual column names if you need to select some columns that are adjacent and some that are not.</p>
 <p><em>Reminder</em>: Remember that once you pipe your data to a dplyr function, you don’t need to specify the name of the data frame again. In <code>select()</code> we just wrote the name of the column with no mention of the data frame. You might be used to writing something like <code>buprestid_data$scientificname</code> to reference a specific column in a data set.</p>
+<p>There are a number of helper functions you can use within <code>select()</code> to save you some typing. You can take a look at these helper functions by typing <code>?tidyselect::select_helpers</code> into the console (assuming you have the <code>tidyverse</code> package installed). I’ll only demonstrate the use of a few in the code chunk below; I leave it up to you to experiment with some of other select helper functions. For this example, I’ve simulated some fake data from 10 different sites. There are three variables (numbered one through three) measuring something. I leave it up to your imagination to decide what those variables are measuring. Then, I simulated the counts of three different species of Buprestid beetles found at each site. Maybe I want to subset the data so I have the site ID variable and variables one through three and in another subset, have just the site ID and the counts for beetles in the <em>Agrilus</em> genus. Here’s how you could use the select helper functions to accomplish that task.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Let&#39;s make a fake data frame with which to experiment</span>
+fake_data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+   <span class="dt">site =</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>),
+   <span class="dt">var1 =</span> <span class="kw">runif</span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>),
+   <span class="dt">var2 =</span> <span class="kw">rnorm</span>(<span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">2</span>),
+   <span class="dt">var3 =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;A&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>), <span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dt">times =</span> <span class="dv">5</span>)),
+   <span class="dt">agrilus.bilineatus.count =</span> <span class="kw">rpois</span>(<span class="dv">10</span>, <span class="dv">7</span>),
+   <span class="dt">agrilus.planipennis.count =</span> <span class="kw">rpois</span>(<span class="dv">10</span>, <span class="dv">15</span>),
+   <span class="dt">brachys.aerosus.count =</span> <span class="kw">rpois</span>(<span class="dv">10</span>, <span class="dv">1</span>)
+)
+
+<span class="co"># first subset of the just &quot;var#&quot; variables</span>
+fake_data_subset1 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">   </span><span class="kw">select</span>(site, <span class="kw">contains</span>(<span class="st">&quot;var&quot;</span>))
+<span class="kw">head</span>(fake_data_subset1) </code></pre></div>
+<pre><code>##   site       var1     var2 var3
+## 1    1 0.47761962 7.717359    A
+## 2    2 0.86120948 4.794425    A
+## 3    3 0.43809711 5.775343    A
+## 4    4 0.24479728 4.892390    A
+## 5    5 0.07067905 2.245881    A
+## 6    6 0.09946616 4.170011    B</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compare that data set to this one</span>
+fake_data_subset2 &lt;-<span class="st"> </span>fake_data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">   </span><span class="kw">select</span>(site, <span class="kw">starts_with</span>(<span class="st">&quot;agrilus&quot;</span>))
+<span class="kw">head</span>(fake_data_subset2)</code></pre></div>
+<pre><code>##   site agrilus.bilineatus.count agrilus.planipennis.count
+## 1    1                        6                        12
+## 2    2                        8                        19
+## 3    3                        6                        18
+## 4    4                        6                        14
+## 5    5                        9                        16
+## 6    6                        5                        13</code></pre>
+<p>We could have actually used a couple different select helper functions to accomplish either task. For example, in getting just the columns that corresponding to <em>Agrilus</em> counts, we could have used <code>contains(&quot;agrilus&quot;)</code> instead of <code>starts_with(&quot;agrilus&quot;)</code>.</p>
 </div>
 <div id="filtering-rows-using-filter" class="section level3">
 <h3><span class="header-section-number">3.6.2</span> Filtering rows using <code>filter()</code></h3>
@@ -425,7 +466,7 @@ buprestid_data &lt;-<span class="st"> </span>buprestid_data <span class="op">%&g
 ## 4 46.94469 46.94469
 ## 5 36.88816 36.88816
 ## 6 43.82500 43.82500</code></pre>
-<p>The <code>&amp;</code> operator does what you might guess it does: in this use of <code>filter()</code> we’re asking R for only rows that have values of n greater than 0 AND the county is “ramsey”. You can also use the <code>|</code> operator to link two statements. The <code>|</code> operator reads as “or”. (Sometimes <code>|</code> is confusingly referred to as a pipe. In this document I’ll only reference it as <code>|</code>, not pipe, to avoid confusion.) A researcher in the Twin Cities might be interested in beetle records for both Hennepin and Ramsey counties. They could filter the data so:</p>
+<p>The <code>&amp;</code> operator does what you might guess it does: in this use of <code>filter()</code> we’re asking R for only rows that have values of n greater than 0 AND the county is “ramsey”. You can also use the <code>|</code> operator to link two statements. The <code>|</code> operator reads as “or”. (Historically <code>|</code> is referred to as a pipe, which may be confusing for some. In this document I’ll only reference it as <code>|</code>, not pipe, to avoid confusion.) A researcher in the Twin Cities might be interested in beetle records for both Hennepin and Ramsey counties. They could filter the data so:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ramsey_hennepin_buprestids &lt;-<span class="st"> </span>buprestid_data <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">   </span><span class="kw">filter</span>(county <span class="op">==</span><span class="st"> &quot;ramsey&quot;</span> <span class="op">|</span><span class="st"> </span>county <span class="op">==</span><span class="st"> &quot;hennepin&quot;</span>)
 
@@ -864,7 +905,7 @@ buprestid_data &lt;-<span class="st"> </span>buprestid_data <span class="op">%&g
 <ol start="6" style="list-style-type: decimal">
 <li>Here’s a histogram showing the distribution of sepal lengths for all the iris observations in the iris dataset. It looks like the sepal lengths tend to fall between 4 and 8 centimeters. Use <code>case_when()</code> to create a new <code>size_sepal_length</code> variable, similar to the above example. Decide how many categories are appropriate and where to place the breaks between categories. Also, edit the <code>Species</code> variable so instead of just listing the species name, it lists both genus and species (for example, “setosa” would become “Iris setosa”. The genus for each case is “Iris”). <em>Bonus points</em> if you can create the <code>size_sepal_length</code> variable and edit the <code>Species</code> variable within a single use of <code>mutate()</code>.</li>
 </ol>
-<p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
 </div>
 <div id="answers-to-practice-questions" class="section level2">
