@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>3 Introduction to Data Cleaning and Manipulation | R For Entomologists</title>
+  <title>R For Entomologists</title>
   <meta name="description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety.">
-  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
-  <meta property="og:title" content="3 Introduction to Data Cleaning and Manipulation | R For Entomologists" />
+  <meta property="og:title" content="R For Entomologists" />
   <meta property="og:type" content="book" />
   
   <meta property="og:image" content="images/cover.png" />
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="wittja01/r_for_entomologists" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Introduction to Data Cleaning and Manipulation | R For Entomologists" />
+  <meta name="twitter:title" content="R For Entomologists" />
   
   <meta name="twitter:description" content="An attempt to push entomologists up the R learning curve and reduce R anxiety." />
   <meta name="twitter:image" content="images/cover.png" />
@@ -36,7 +36,6 @@
 <link rel="next" href="for-loops.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -167,12 +166,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">3.1</span> Background required</h2>
 <p>This document assumes you are comfortable with installing and loading packages, reading data into R as a data.frame, assigning values to objects, and using basic functions like <code>mean()</code> and <code>sum()</code>.</p>
 <p>Before we can start, we’ll need to make sure you have the <code>tidyverse</code> package installed. Run the code below to install the package and load it (don’t worry about understanding the code if you don’t, that’s not the point of this tutorial).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tidyverse)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)</code></pre></div>
-<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;purrr&#39; was built under R version 3.5.2</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(tidyverse)) <span class="kw">install.packages</span>(<span class="st">&quot;tidyverse&quot;</span>)
+<span class="kw">library</span>(tidyverse)</code></pre></div>
 </div>
 <div id="lets-get-started" class="section level2">
 <h2><span class="header-section-number">3.2</span> Let’s get started!</h2>
@@ -1299,7 +1294,7 @@ gitbook.start({
 "google": true,
 "linkedin": true,
 "weibo": false,
-"instapaper": false,
+"instapper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -1309,10 +1304,6 @@ gitbook.start({
 "size": 2
 },
 "edit": null,
-"history": {
-"link": null,
-"text": null
-},
 "download": ["_main.pdf", "_main.epub", "_main.mobi"],
 "toc": {
 "collapse": "subsection"
@@ -1331,7 +1322,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;
