@@ -118,6 +118,16 @@ aggregate_data <- aggregate(m_total_path ~ treat_id,
 mean_avg_dist2016 <- as.data.frame(as.list(aggregate_data))
 ```
 
+Generally speaking, a long line of code can usually be split onto several differnt lines by splitting after a comma (,) inside of a function call. For example:
+
+```{r, eval = FALSE, echo = TRUE}
+mean(my_nuemric_vector, na.rm = TRUE)
+
+mean(my_numeric_vector,
+     na.rm = TRUE)
+```
+
+
 In the last example, it made sense for us to make our code more readable by both spreading the code over more vertical space AND adding an intermediate step where we saved the output of one function and then used that output in another. This is what I was referring to above when I said if a line of code is over 80 characters, you might be trying to do too much in that line. The pipe operator, ` %>% ` which is covered elsewhere in this book, is really helpful in preventing this scenario from occurring. 
 
 There are a lot of smaller details to consider that are mentioned in a style guide, like conventions for naming objects and files and such, but we won't get into these here. In this section we took a look at some of the nitty-gritty aspect of code writing but for the next few sections, we're going to zoom out above the code level and talk more generally organizing your files utilizing R projects.

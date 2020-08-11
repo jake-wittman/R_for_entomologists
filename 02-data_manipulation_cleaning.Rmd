@@ -11,7 +11,9 @@ output:
 This document assumes you are comfortable with installing and loading packages, reading data into R as a data.frame, assigning values to objects, and using basic functions like `mean()` and `sum()`. 
 
 Before we can start, we'll need to make sure you have the `tidyverse` package installed. Run the code below to install the package and load it (don't worry about understanding the code if you don't, that's not the point of this tutorial).
-```{r install_packages, echo = TRUE, message = FALSE}
+
+
+```{r install_packages, echo = TRUE, message = FALSE, warning = FALSE}
 if (!require(tidyverse)) install.packages("tidyverse")
 library(tidyverse)
 ```
@@ -28,7 +30,7 @@ You should be familiar with the assignment operator. It's used to tell R that yo
 
 `x <- 4`
 
-You can read this R code as "store 4 in x" or "assign the number 4 to the letter x". This is a basic application of the assignment operator. Let's look at a slightly more complicated application.
+You can read this R code as "store 4 in x" or "assign the number 4 to the letter x". This is a basic application of the assignment operator. Let's look at a slightly more complicated application. Make sure to read the comments along with the code.
 
 ```{r, echo = TRUE, eval = TRUE}
 # The set.seed function is used to make sure our "random" results are consistent.
@@ -47,19 +49,21 @@ y <- mean(x)
 y
 ```
 
-In simple (probably overly simple, but that's okay) language, we randomly picked 10 numbers (using the `sample()` function) and used the assignment operator to "give" these 10 numbers to x. Then we calculated the mean of these 10 numbers and "gave" those numbers to y. Now, if we wanted we could type x or y into the console in R and return the respective value(s) we "gave" to them. 
+We can describe what we just did in R in simple (probably overly simple, but that's okay) language. We randomly picked 10 numbers (using the `sample()` function) and used the assignment operator to "give" these 10 numbers to x. Then we calculated the mean of these 10 numbers and "gave" those numbers to y. Now, if we wanted we could type x or y into the console in R and return the respective value(s) we "gave" to them. 
 
 *Side note*: You can also use `=` as an assignment operator but you shouldn't. Most R style guides recommend reserving `<-` as your assignment operator and using `=` only within a function to specify arguments for the function.
 
 If you've worked in R a little before or have some programming background, you may know that you can also nest functions inside one another. Instead of assigning 10 random numbers to x and then taking the mean of x, we could have just nested the `sample()` function inside the mean function like so:
 
-`y <- mean(sample(1:10, 10, replace = TRUE)`
+`y <- mean(sample(1:10, 10, replace = TRUE))`
 
-Much like when performing the order of operations in a math equation containing multiple sets of parentheses, R will start with whatever function is nested the furthest inside and then work out. So the code above, in plain English, reads as "First, sample 10 numbers from the numbers 1 through 10 with replacement, then take the mean of those 10 numbers and store that mean value as y". This English "translation" is an accurate representation of what R is doing when it reads that code. That is to say, R executes the code in the same order I described it in in English. Now, take a moment and consider the plain English reading of the above code and compare that to how the code is actually written. How do you read the English sentence? How do you read the code?
+Much like when performing the order of operations in a math equation containing multiple sets of parentheses, R will start with whatever function is nested the furthest inside and then work out. So the code above, in plain English, reads as "First, sample 10 numbers from the numbers 1 through 10 with replacement, then take the mean of those 10 numbers and store that mean value as y". This English "translation" is an accurate representation of what R is doing when it reads that code. That is to say, R executes the code in the same order I described it in in English.
 
-The code does not read like an English sentence. When we read in English, we read from left to right. In the R code version, we basically end up reading the code from right to left to figure out what order R is working in. A translation that is more faithful to the way the code is actually written  might be: "In the object y, we will store the mean of a sample of 10 random numbers between 1 and 10". This translation doesn't reflect the order in which R actually reads through the code though (our first translation more accurately reflects the order R works through your code). This results in a mismatch between our expectations as English readers when we are trying to learn to read R code and understand what is happening. Thankfully, the tidyverse has provided us with an operator (the pipe!) to make how we write code match up with our intuitions.
+Now, take a moment and consider the plain English reading of the above code and compare that to how the code is actually written. How do you read the English sentence? How do you read the code?
 
-TL;DR: English reads from left to right. When you nest functions in R, you end up needing to read the code more or less from right to left. This does not match our intuitions and can make learning read, write, and understand more difficult. Enter the pipe!
+The code does not read like an English sentence. When we read in English, we read from left to right. In the R code version, we end up reading the code from right to left (sort of) to figure out what order R is working in. A translation that is more faithful to the way the code is actually written  might be: "In the object y, we will store the mean of a sample of 10 random numbers between 1 and 10". This translation doesn't reflect the order in which R actually reads through the code though (our first translation more accurately reflects the order R works through your code). This results in a mismatch between our expectations as English readers when we are trying to learn to read R code and understand what is happening. Thankfully, the tidyverse has provided us with an operator (the pipe!) to make how we write code match up with our intuitions.
+
+TL;DR: English reads from left to right. When you nest functions in R, you end up needing to read the code more or less from right to left. This does not match our intuitions and can make learning to read, write, and understand the code more difficult. Enter the pipe!
 
 The pipe operator allows us to reorganize our code so that it reads more like English. Instead of nesting functions, we can "pipe" the results of one function to another function. Here's the piped version of the above code.
 
@@ -72,7 +76,7 @@ sample(1:10, 10, replace = TRUE) %>% mean()
 
 Now, our code lines up with both our expectations for how it should be read (left to right) and how R will execute the code (and if you compare the answer we got for the mean in both examples, you'll see they're the same)! First, R will sample 10 numbers from between 1 and 10, then it will "pipe" those ten numbers to the mean function, which will calculate the mean of those 10 numbers. Let's look at a few more examples of the pipe in action and then there will be a few problems you can work through to practice using the pipe.
 
-*Side note*: You may be confused about the difference between the assignment operator `<-` and the pipe `%>%` because of some of the plain English used above. The assignment operator is used to tell R to associate an object name (the variables `x` or `y` above) with something else (in our case, a sample of 10 numbers and a mean, respectively). By using the assignment operator you create a permanent association between the object `x` and the sample of 10 numbers (at least until you remove x from your environment, or reassign x to some other object). The pipe operator does not create any such association. All the pipe operator does is take an object, or the output from a function, and "sends" it to another function to use. You cannot pipe one object to another object, you'll get an error. If you want to save the output from a function in a pipe chain, you have to use the assignment operator (I'll cover this later).
+*Side note*: You may be confused about the difference between the assignment operator `<-` and the pipe `%>%` because of some of the plain English used above. The assignment operator is used to tell R to associate an object name (the variables `x` or `y` above) with something else (in our case, a sample of 10 numbers and a mean, respectively). By using the assignment operator you create a permanent association between the object `x` and the sample of 10 numbers (permanent, at least until you remove x from your environment, or reassign x to some other object). The pipe operator does not create any such association. All the pipe operator does is take an object, or the output from a function, and "sends" it to another function to use. You cannot pipe one object to another object, you'll get an error. If you want to save the output from a function in a pipe chain, you have to use the assignment operator (I'll cover this later).
 
 ## Pipe examples
 
@@ -116,11 +120,11 @@ sd_tibia_length
 
 This might be confusing at first. Didn't I just say that we want to try to write code that reads like English and also reflects the order in which R will execute the code? Isn't storing our output in the object the last thing R would do? Why are we putting that first in our code? We sacrifice a little bit of intuitive readability here to speed up our work flow as we write more lines of code. In my experience, I've found that I spend more time referencing the objects I've saved some output as ("what did I call that again?", "where did I calculate that?", etc.) than re-reading exactly what I did. Think of the assignment operator as a placeholder dividing your code into two separate sides, left of the assignment operator and right of the assignemnt operator. By putting the object I've saved something as on the left side, it makes it easier for me to find it again in the code or quickly scan what I've written to see my output. The readability of what you did on the right hand side of the assignment operator becomes important when you're returning to code you wrote a long time ago or are sharing code with someone who is looking at it for the first time. This arrangement strikes a balance between your needs while writing code, and your's or someone else's needs when looking at the code later.
 
-*Side note*: The pipe operator `%>%` can be kind of frustrating to type. Thankfully there's a keyboard shortcut for it in R Studio! If you're using a Windows machine use **ctrl + shift + m** to insert the pipe operator. While we're at it, there's a shortcut for the assignment operator `<-` too! Again, on a Windows machine type **alt + -**. (Sorry, I don't know the Mac OS shortcuts. A google search might help?)
+*Side note*: The pipe operator `%>%` can be kind of frustrating to type. Thankfully there's a keyboard shortcut for it in R Studio! If you're using a Windows machine use **ctrl + shift + m** to insert the pipe operator. While we're at it, there's a shortcut for the assignment operator `<-` too! Again, on a Windows machine type **alt + -**. (Sorry, I don't know the Mac OS shortcuts. I'd guess that you replace **Ctrl** with **Cmd**. A google search might help?)
 
 ## Chaining multiple functions together with the pipe
 
-You can use the pipe operator to link multiple functions together, which is often useful when summarizing data. Here's a brief example. I'll briefly explain what these functions do if you haven't seen them before, but we'll cover them in more depth in a bit. In this example, I'll show you three methods of achieving the same result to highlight again why pipes are useful or preferred over other methods. The first method will nest multiple functions to avoid saving unneeded intermediate objects while still not using pipes.In the second method, we'll save every intermediate step as an object on our way to our final goal without using any pipes.  The final method will use pipes.
+You can use the pipe operator to link multiple functions together, which is often useful when summarizing data. The code for this brief example is below the following paragraph. I'll briefly explain some of the code before we get there but we'll cover them in more depth in a bit. In this example, I'll show you three methods of achieving the same result to highlight again why pipes are useful or preferred over other methods. The first method will nest multiple functions to avoid saving unneeded intermediate objects while still not using pipes.In the second method, we'll save every intermediate step as an object on our way to our final goal without using any pipes.  The final method will use pipes.
 
 In this example, we're using the `iris` dataset that is built into R. If you type `iris` into your console, it'll print out the dataset. This data has observations on sepal length and width and petal length and width for three different species of irises. This example is a little contrived, but it illustrates my point. Imagine you want to take the iris data set and are interested in only the data on *Iris setosa*. Furthermore, you don't care about anything but the sepal length of *Iris setosa*. And for some reason, you want the data ordered from shortest sepal length to longest sepal length for *Iris setosa*. Here are three ways you could accomplish this using dplyr verbs that let you **filter** your data based on certain criteria, **select** particular columns from your data, and **arrange** the data according to a certain variable: 
 
@@ -133,6 +137,8 @@ nested_sepal_length <- arrange(select(filter(iris, Species == "setosa"), Sepal.L
 ### Saving every intermediate step without any pipes
 
 ```{r intermediate}
+# Make a new data frame called setosa_iris which holds only the observations where
+# species is "setosa"
 setosa_iris <- filter(iris, Species == "setosa")
 sepal_length <- select(setosa_iris, Sepal.Length)
 intermediate_sepal_length <- arrange(sepal_length, Sepal.Length)
@@ -156,11 +162,35 @@ identical(intermediate_sepal_length, piped_sepal_length)
 identical(nested_sepal_length, piped_sepal_length)
 ```
 
-Based on the pairwise comparisons of our three data frames, all three methods produced the same object. So which is the best? You'll probably have guessed that I'll say the pipe method is the best and you'll be right. Let's start by comparing the piped method to our nested function. 
+Based on the pairwise comparisons of our three data frames, all three methods produced the same object. So which is the best? If you guessed that Id say the pipe method is the best and you'd be right. Let's start by comparing the piped method to our nested function. 
 
 First, let's compare the pipes to our nested function method. Earlier we saw an example of nesting one function within another; that example wasn't *that* hard to read if we really had to. I find the example at hand with three nested functions, each with their own extra arguments, much harder to decipher. As I mentioned before, with nested functions you have to read in a way that is counter-intuitive to the way we usually read. The pipes eliminate that problem, allowing us to read our code in a more natural manner, reducing our intellectual overhead.
 
-Now, let's compare the piped method to our intemediate steps method. Look at the functions filter, select, and arrange in each of the two examples we're focusing on. You might notice that in the intermediate steps example, each of those three functions has two arguments: the first is the data frame being used and the second specifies what part of the data frame on which the action should be performed. Why do the functions in the piped example not need to specify what data is being used? The pipe operator essentially takes care of informing the next function what data is being used. Convention for *most*, but not all, R functions is for the first argument to specify what data is being used. The pipe takes advantage of that fact and takes care of the work of specifying the first argument for you, which saves you some typing time and space. The pipes are also useful because you don't end up with a lot of intermediate objects that you might not use again. Pipes keep your programming environment clean by eliminating many one-use objects which in turn makes it easier to remember what objects you need for specific tasks.
+Now, let's compare the piped method to our intemediate steps method. Look at the functions filter, select, and arrange in each of the two examples we're focusing on. You might notice that in the intermediate steps example, each of those three functions has two arguments: the first is the data frame being used and the second specifies the part of the data frame on which the action should be performed. Why do the functions in the piped example not need to specify what data is being used? These functions (and most functions in the `tidyverse`) are written with the pipe operator in mind. When you use tidyverse functions in a pipe, they default to using output piped from another function as data in the next function. If you wanted to be explicit, you can specify the data being used as you pipe from one function to the next this way:
+
+```{r}
+# The "." stands in for the object being piped into the function
+piped_sepal_length <- iris %>% 
+   filter(., Species == "setosa") %>% 
+   select(., Sepal.Length) %>% 
+   arrange(., Sepal.Length)
+```
+
+In this code, the "." is explicitly standing in for the data object, which is being piped into the function. We piped the iris dataset into the `filter()` function and the "." represents what is being piped in. Similarly, we filter the iris dataset and the pipe that filtered dataset into the `select()` function. We specify the data to be selected explicitly by including the ".", which represents the piped in input of the filtered  datset. Using the "." allows us to work with functions that wouldn't otherwise play well with pipes (as in, they always require that the data argument be specified).
+Not every function you can use in R will play well with piped output. For example:
+
+```{r, eval = FALSE}
+# This won't work - the mean() function is not part of the tidyverse so it doesn't
+# inherently play well with the pipe
+iris %>% lm(Sepal.Length ~ Sepal.Width)
+
+# This will work
+iris %>% lm(Sepal.Length ~ Sepal.Width, data = .)
+```
+
+In this example, we wanted to run a simple linear regression to look at the relationship between sepal width and sepal length. The first line won't work - the `lm()` function was not written with the pipe in mind (it's not part of the tidyverse) and so it doesn't know what to do with `iris` when `iris` gets piped to `lm()`. We can tell `lm()` what to do with `iris` by using the period and setting `data = .`. This tells `lm()` that the piped in object `iris`, represented by the period, should be used as the data argument for the `lm()` function.
+
+Pipes are also useful because you don't end up with a lot of intermediate objects that you might not use again. Pipes keep your programming environment clean by eliminating many one-use objects which in turn makes it easier to remember what objects you need for specific tasks. In the intermediate example, we had to make several objects that we may not use again at any point. We can keep our environment clean by not saving them in the first place.
 
 I've presented the code in order of what I find least preferred to most preferred. Avoid the temptation to nest functions whenever possible, although sometimes nesting 1 function within another is ok (all rules are meant to be broken, right?) if the two functions aren't too complex. Also, you'll find that sometimes it makes sense to break up a pipeline (multiple functions piped together) into smaller pipelines. Don't feel like you need to construct incredibly long, elaborate pipelines. Do what works best for the problems you are trying to address and what makes your code easiest to read. 
 
